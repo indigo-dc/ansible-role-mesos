@@ -1,0 +1,39 @@
+---
+# Tasks for Slave nodes
+
+- name: Ensure local certs directory exists
+  file: state=directory path=/usr/local/share/ca-certificates
+
+- name: Install rootCA certificate
+  copy: src=rootCA.crt dest=/usr/local/share/ca-certificates/rootCA.crt
+
+- name: Update cert index
+  shell: /usr/sbin/update-ca-certificates
+
+
+- name: run mesos-slave container
+  when: mesos_install_mode == "slave"
+  docker:
+    name: mesos-slave
+    image: "{{ mesos_slave_image }}"
+    state: started
+    privileged: true
+    pid: host
+    restart_policy: always
+    volumes:
+    - "/sys/fs/cgroup:/sys/fs/cgroup"
+    - "/var/run/docker.sock:/var/run/docker.sock"
+    - "/tmp/mesos:/{{ mesos_slave_work_dir }}"
+    net: "host"
+    env:
+      MESOS_MASTER: "zk://{{ zookeeper_peers_nodes }}/mesos"
+      MESOS_EXECUTOR_REGISTRATION_TIMEOUT: "{{ mesos_executor_registration_timeout }}"
+      MESOS_CONTAINERIZERS: "{{ mesos_containerizers }}"
+      MESOS_LOG_DIR: "{{ mesos_log_dir }}"
+      MESOS_docker_mesos_image: "{{ mesos_slave_image }}"
+      MESOS_IP: "{{ mesos_ip }}"
+      MESOS_WORK_DIR: "{{ mesos_slave_work_dir }}"
+      MESOS_HOSTNAME: "{{ mesos_ip }}"
+  tags:
+    - mesos-slave
+

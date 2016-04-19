@@ -1,0 +1,18 @@
+- name: run mesos-master container
+  when: mesos_install_mode == "master"
+  docker:
+    name: mesos-master
+    image: "{{ mesos_master_image }}"
+    detach: true
+    state: started
+    net: "host"
+    env:
+      MESOS_HOSTNAME: "{{ mesos_hostname }}"
+      MESOS_IP: "{{ mesos_ip }}"
+      MESOS_CLUSTER: "{{ mesos_cluster_name }}"
+      MESOS_ZK: "zk://{{ zookeeper_peers_nodes }}/mesos"
+      MESOS_LOG_DIR: "/var/log"
+      MESOS_QUORUM: "{{ mesos_quorum }}"
+    restart_policy: always
+  tags:
+    - mesos-master
