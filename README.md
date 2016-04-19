@@ -1,22 +1,40 @@
 Role Name
 =========
 
-A brief description of the role goes here.
+Configure and run Mesos components (master or slaves) in a docker container using the images `indigodatacloud/mesos-master:latest` or `indigodatacloud/mesos-slave:latest`.
 
-Requirements
-------------
-
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+This role has been specifically developed to be used for the deployment of Mesos in the framework of INDIGO-DataCloud project.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+Common vars:
+
+- `mesos_install_mode`: "master" or "slave"
+- `zookeeper_peers`
+- `zookeeper_client_port` (default: 2181)
+
+Master
+
+- `mesos_cluster_name` (default: "IndigoCluster")
+- `mesos_version` (default: latest)
+- `mesos_master_image` (default: "indigodatacloud/mesos-master:{{ mesos_version }}")
+- `mesos_master_quorum` (optional)
+
+Slave
+
+- `mesos_executor_registration_timeout` (default: 10mins)
+- `mesos_version` (default: latest)
+- `mesos_slave_image`(default: "indigodatacloud/mesos-slave:{{ mesos_version }})
+- `mesos_containerizers` (default: "docker,mesos")
+- `mesos_slave_work_dir` (default: "/tmp/mesos")
+- `mesos_masters_list`
+ 
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+- `indigo-dc.docker`
 
 Example Playbook
 ----------------
