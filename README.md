@@ -1,4 +1,4 @@
-Role Name
+Mesos Role
 =========
 
 Configure and run Mesos components (master or slaves) in a docker container using the images `indigodatacloud/mesos-master:latest` or `indigodatacloud/mesos-slave:latest`.
