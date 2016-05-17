@@ -39,18 +39,25 @@ Dependencies
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+This is an example of how to use `mesos` role:
+
+For "master" nodes:
 
     - hosts: servers
       roles:
-         - { role: username.rolename, x: 42 }
+         - { role: indigo-dc.mesos, mesos_install_mode: "master", zookeeper_peers: ["10.10.0.1", "10.10.0.2", "10.10.0.3"], mesos_masters_list: ["10.10.0.10", "10.10.0.11", "10.10.0.12"] }
+
+For "slave" nodes:
+
+    - hosts: servers
+      roles:
+         - { role: indigo-dc.mesos, mesos_install_mode: "slave", zookeeper_peers: ["10.10.0.1", "10.10.0.2", "10.10.0.3"], mesos_masters_list: ["10.10.0.10", "10.10.0.11", "10.10.0.12"] }
 
 License
 -------
 
-BSD
+Apache Licence v2 [1]
 
-Author Information
-------------------
+[1] http://www.apache.org/licenses/LICENSE-2.0
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+
