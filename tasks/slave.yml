@@ -24,7 +24,7 @@
   docker:
     name: mesos-slave
     image: "{{ mesos_slave_image }}"
-    state: started
+    state: reloaded
     privileged: true
     pid: host
     restart_policy: always

@@ -11,7 +11,7 @@
     name: mesos-master
     image: "{{ mesos_master_image }}"
     detach: true
-    state: started
+    state: reloaded
     net: "host"
     volumes:
     - "{{ mesos_master_work_dir }}:{{ mesos_master_work_dir }}"
