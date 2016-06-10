@@ -22,8 +22,8 @@ mesos_version: 'latest'
 # Defaults file for mesos-salve
 mesos_slave_port: 5051
 mesos_containerizers: "docker,mesos"
-mesos_slave_work_dir: "/tmp/mesos"
-mesos_log_dir: "/var/log"
+mesos_slave_work_dir: "/var/lib/mesos"
+mesos_log_dir: "/var/log/mesos"
 mesos_slave_image: "indigodatacloud/mesos-slave:{{ mesos_version }}"
 
 # Defaults file for mesos-master

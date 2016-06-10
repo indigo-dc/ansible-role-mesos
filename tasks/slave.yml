@@ -11,19 +11,28 @@
   shell: /usr/sbin/update-ca-certificates
 
 
+- name: create working dir
+  file:
+    path: "{{ mesos_slave_work_dir }}"
+    state: directory
+    mode: 0755
+  tags:
+    - mesos-slave
+
+
 - name: run mesos-slave container
-  when: mesos_install_mode == "slave"
   docker:
     name: mesos-slave
     image: "{{ mesos_slave_image }}"
-    state: started
+    state: reloaded
     privileged: true
     pid: host
     restart_policy: always
     volumes:
     - "/sys/fs/cgroup:/sys/fs/cgroup"
     - "/var/run/docker.sock:/var/run/docker.sock"
-    - "/tmp/mesos:/{{ mesos_slave_work_dir }}"
+    - "{{ mesos_slave_work_dir }}:{{ mesos_slave_work_dir }}"
+    - "{{ mesos_log_dir }}:{{ mesos_log_dir }}"
     net: "host"
     env:
       MESOS_MASTER: "zk://{{ zookeeper_peers_nodes }}/mesos"

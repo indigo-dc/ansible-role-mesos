@@ -1,18 +1,29 @@
+- name: create directory path to store the persistent information 
+  file:
+    path: "{{ mesos_master_work_dir }}"
+    state: directory
+    mode: 0755
+  tags:
+    - mesos-master
+
 - name: run mesos-master container
-  when: mesos_install_mode == "master"
   docker:
     name: mesos-master
     image: "{{ mesos_master_image }}"
     detach: true
-    state: started
+    state: reloaded
     net: "host"
+    volumes:
+    - "{{ mesos_master_work_dir }}:{{ mesos_master_work_dir }}"
+    - "{{ mesos_log_dir }}:{{ mesos_log_dir }}"
     env:
       MESOS_HOSTNAME: "{{ mesos_hostname }}"
       MESOS_IP: "{{ mesos_ip }}"
       MESOS_CLUSTER: "{{ mesos_cluster_name }}"
       MESOS_ZK: "zk://{{ zookeeper_peers_nodes }}/mesos"
-      MESOS_LOG_DIR: "/var/log"
+      MESOS_LOG_DIR: "{{ mesos_log_dir }}"
       MESOS_QUORUM: "{{ mesos_quorum }}"
+      MESOS_WORK_DIR: "{{ mesos_master_work_dir }}"
     restart_policy: always
   tags:
     - mesos-master
