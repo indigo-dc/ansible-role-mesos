@@ -1,0 +1,3 @@
+---
+- name: update root trust anchor
+  command: "{{ update_root_trust_anchor }}"

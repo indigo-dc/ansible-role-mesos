@@ -2,14 +2,15 @@
 # Tasks for Slave nodes
 
 - name: Ensure local certs directory exists
-  file: state=directory path=/usr/local/share/ca-certificates
+  file: state=directory path={{ trust_anchor_root_dir }}
 
 - name: Install rootCA certificate
-  copy: src=rootCA.crt dest=/usr/local/share/ca-certificates/rootCA.crt
+  copy: src=rootCA.crt dest={{ trust_anchor_root_dir }}/rootCA.crt
+  notify:
+    - update root trust anchor
 
-- name: Update cert index
-  shell: /usr/sbin/update-ca-certificates
-
+# Force handler flush so that the rootCA is immediately taken into account
+- meta: flush_handlers
 
 - name: create working dir
   file:
