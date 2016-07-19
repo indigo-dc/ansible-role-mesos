@@ -7,7 +7,7 @@ zookeeper_peers_nodes: "
 	{%- if zookeeper_peers is defined -%}
             {% for host in zookeeper_peers %}{{host}}:{{zookeeper_client_port}}{% if not loop.last %},{% endif %}{% endfor %}
 	{%- else -%}
-            {%- for host in groups[zookeeper_server_group] -%}{{hostvars[host]['ansible_eth0']['ipv4']['address']}}:{{zookeeper_client_port}}{% if not loop.last %},{% endif %}{% endfor %} 
+            {%- for host in groups[zookeeper_server_group] -%}{{hostvars[host]['ansible_default_ipv4']['address']}}:{{zookeeper_client_port}}{% if not loop.last %},{% endif %}{% endfor %} 
 	{%- endif -%}
 "
 
