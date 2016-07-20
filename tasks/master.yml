@@ -24,6 +24,7 @@
       MESOS_LOG_DIR: "{{ mesos_log_dir }}"
       MESOS_QUORUM: "{{ mesos_quorum }}"
       MESOS_WORK_DIR: "{{ mesos_master_work_dir }}"
+      MESOS_OFFER_TIMEOUT: "{{ mesos_master_offer_timeout }}"
     restart_policy: always
   tags:
     - mesos-master
