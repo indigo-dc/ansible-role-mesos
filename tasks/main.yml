@@ -1,0 +1,95 @@
+---
+# tasks file for cms_config
+- name: install cvmfs repo
+  apt: deb=https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest_all.deb
+  tags: cms_config
+
+- name: Install cvmfs packages
+  apt: name={{item}} state=present update_cache=yes
+  with_items:
+       - cvmfs
+       - cvmfs-config-default
+  tags: cms_config
+
+- name: create/update file /etc/cvmfs/default.local
+  blockinfile:
+    dest: /etc/cvmfs/default.local
+    create: yes
+    content: |
+      CVMFS_HTTP_PROXY={{cms_config_cvmfs_http_proxy}}
+      CVMFS_REPOSITORIES={{cms_config_cvmfs_repositories}}
+  tags: cms_config
+
+
+- name: create necessary dirs
+  file:  path={{item}} state=directory mode=0755
+  with_items:
+    - /opt/exp_sw/cms
+    - /root/.globus
+  tags: cms_config
+
+- name: set CMS_LOCAL_SITE variable
+  lineinfile: dest=/etc/cvmfs/config.d/cms.cern.ch.conf create=yes line="export CMS_LOCAL_SITE=/opt/exp_sw/cms"  
+  tags: cms_config
+
+- name: Update /etc/auto.master
+  lineinfile: dest=/etc/auto.master create=yes line="/cvmfs /etc/auto.cvmfs"
+  tags: cms_config
+
+- name: Enable user_allow_other in fuse.conf
+  lineinfile: dest=/etc/fuse.conf line="user_allow_other" state=present
+  tags: cms_config
+
+- name: Launch cvms_config chksetup
+  command: cvmfs_config chksetup
+  tags: cms_config
+
+- name: Restart autofs 
+  service: name=autofs state=restarted 
+  tags: cms_config
+
+- name: Launch cvmfs_config probe
+  command: cvmfs_config probe
+  tags: cms_config
+
+- name: create certificate file
+  blockinfile:
+    dest: '{{cms_config_certificate_path}}'
+    create: yes
+    mode: 0600
+    content: |
+      -----BEGIN CERTIFICATE-----
+       -----END CERTIFICATE-----
+  tags: cms_config
+
+- name: Set wide-system environment vars
+  blockinfile:
+    dest: /etc/environment
+    create: yes
+    content: |
+      CMS_LOCAL_SITE={{cms_config_cms_local_site}}
+      MYSQUID={{cms_config_mysquid}}
+      STAGEOUTSITE={{cms_config_stageoutsite}}
+      STAGEOUTSERVER={{cms_config_stageoutserver}}
+      STAGEOUTPREFIX={{cms_config_stageoutprefix}}
+      VOMSPROXYDIR={{cms_config_vomsproxydir}}
+  tags: cms_config
+
+- name: 'Add cron to avoid [cannot open directory /cvmfs/cms.cern.ch: Too many levels of symbolic links]'
+  cron: name="list dir cvmfs/cms.cern.ch" job="ls /cvmfs/cms.cern.ch/ > /dev/null" state=present
+  tags: cms_config
+
+- name: copy the content of T3_IT_Opportunistic into /opt/exp_sw/cms/
+  shell: cp -r -u /cvmfs/cms.cern.ch/SITECONF/T3_IT_Opportunistic/* /opt/exp_sw/cms/
+  tags: cms_config
+
+- name: Update site-local-config.xml
+  replace: dest=/opt/exp_sw/cms/JobConfig/site-local-config.xml regexp='{{item.regexp}}' replace='{{item.replace}}' backup=yes
+  with_items:
+    - { regexp: '/cvmfs/cms.cern.ch/SITECONF/T3_IT_Opportunistic', replace: '/cvmfs/cms.cern.ch/SITECONF/local'} 
+    - { regexp: 'T3_IT_Opportunistic', replace: '{{cms_config_cms_local_site}}'}
+    - { regexp: 'srm://storm-fe-cms.cr.cnaf.infn.it:8444/srm/managerv2?SFN=/cmsdisk/', replace: '{{cms_config_stageoutprefix}}'}
+    - { regexp: 'T1_IT_CNAF_Disk', replace: '{{cms_config_stageoutsite}}' }
+    - { regexp: 'storm-fe-cms.cr.cnaf.infn.it', replace: '{{cms_config_stageoutserver}}'}
+  tags: cms_config
+
