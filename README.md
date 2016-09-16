@@ -1,38 +1,48 @@
-Role Name
+cms_config Role
 =========
 
-A brief description of the role goes here.
+Configure CVMFS,  ENV Variables,  TFC, Proxy, etc for CMS
 
-Requirements
-------------
-
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+- `cms_config_cvmfs_http_proxy` (default: "http://cream-bdii.pg.infn.it:3128")
+- `cms_config_cvmfs_repositories` (default: "cms")
+- `cms_config_certificate_path` (default: "/root/.globus/spiga_x509up_u16858")
+- `cms_config_cms_local_site` (default: "T3_IT_Spiga")
+- `cms_config_mysquid` (default: "http://cream-bdii.pg.infn.it:3128")
+- `cms_config_stageoutsite` (default: "T1_IT_CNAF_Disk")
+- `cms_config_stageoutserver` (default: "storm-fe-cms.cr.cnaf.infn.it")
+- `cms_config_stageoutprefix` (default: "srm://storm-fe-cms.cr.cnaf.infn.it:8444/srm/managerv2?SFN=/cmsdisk/")
+- `cms_config_vomsproxydir` (default: "/root/.globus")
+
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+None
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+This is an example of how to use `cms_config` role:
 
     - hosts: servers
       roles:
-         - { role: username.rolename, x: 42 }
+         - { role: indigo-dc.cms_config, cms_config_cms_local_site: "MY_SITE" }
 
 License
 -------
 
-BSD
+Apache Licence v2 [1]
+
+[1] http://www.apache.org/licenses/LICENSE-2.0
+
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+marica.antonacci@ba.infn.it
+
+daniele.spiga@pg.infn.it
