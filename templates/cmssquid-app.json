@@ -1,0 +1,19 @@
+{
+    "id": "cmssquid",
+    "container": {
+      "type": "DOCKER",
+      "docker": {
+        "image": "{{cms_config_squid_image}}",
+        "network": "BRIDGE",
+        "portMappings": [{
+          "containerPort": {{cms_config_mysquid_port}},
+          "servicePort": {{cms_config_mysquid_port}},
+          "protocol": "tcp"
+        }]
+      }
+    },
+    "cmd": "/launch_squid.sh",
+    "instances": 1,
+    "cpus": 1.00,
+    "mem": 2048
+ }

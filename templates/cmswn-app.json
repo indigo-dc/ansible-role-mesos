@@ -1,0 +1,27 @@
+{
+        "id": "cmswnandrew",
+        "cmd": "/root/launchAndrew_spiga.sh",
+        "cpus": 1.00,
+        "mem": 2048,
+        "instances": 1,
+        "container": {
+                "type": "DOCKER",
+                "docker": {
+                        "image": "{{cms_config_wn_image}}",
+                        "network": "BRIDGE",
+                },
+                "volumes": [{
+                        "containerPath": "/opt/exp_sw/cms",
+                        "hostPath": "/opt/exp_sw/cms",
+                        "mode": "RW"
+                }, {
+                        "containerPath": "/cvmfs",
+                        "hostPath": "/cvmfs",
+                        "mode": "RW"
+                }]
+        },
+        "env": {
+                "FRONTIER_PROXY": "{{cms_config_mysquid}}",
+                "CMS_LOCAL_SITE": "{{cms_config_cms_local_site}}"
+        }
+}
