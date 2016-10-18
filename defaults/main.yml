@@ -7,9 +7,13 @@ cms_config_cvmfs_repositories: "cms"
 cms_config_certificate_path: "/root/.globus/spiga_x509up_u16858"
 
 cms_config_cms_local_site: "T3_IT_Spiga"
-cms_config_mysquid: "http://cream-bdii.pg.infn.it:3128"
+cms_config_mysquid_host: "cream-bdii.pg.infn.it"
+cms_config_mysquid_port: 3128
+cms_config_mysquid: "http://{{cms_config_mysquid_host}}:{{cms_config_mysquid_port}}"
 cms_config_stageoutsite: "T1_IT_CNAF_Disk"
 cms_config_stageoutserver: "storm-fe-cms.cr.cnaf.infn.it"
 cms_config_stageoutprefix: "srm://storm-fe-cms.cr.cnaf.infn.it:8444/srm/managerv2?SFN=/cmsdisk/"
 cms_config_vomsproxydir: "/root/.globus"
 
+cms_config_squid_image: "spiga/frontiersquid_v4"
+cms_config_wn_image: "spiga/cmsmesos_v3"
