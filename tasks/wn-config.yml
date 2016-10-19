@@ -72,7 +72,6 @@
       STAGEOUTSITE={{cms_config_stageoutsite}}
       STAGEOUTSERVER={{cms_config_stageoutserver}}
       STAGEOUTPREFIX={{cms_config_stageoutprefix}}
-      VOMSPROXYDIR={{cms_config_vomsproxydir}}
   tags: cms_config
 
 - name: 'Add cron to avoid [cannot open directory /cvmfs/cms.cern.ch: Too many levels of symbolic links]'
