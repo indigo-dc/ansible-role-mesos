@@ -15,8 +15,8 @@
      body_format: json
   register: result
   until: result.status == 200
-  retries: 3
-  delay: 10
+  retries: 10
+  delay: 20
   changed_when: false
   tags:
     - cms_apps
@@ -25,7 +25,8 @@
   wait_for: 
      host: "{{cms_config_mysquid_host}}" 
      port: "{{cms_config_mysquid_port}}"
-     delay: 10
+     delay: 20
+     timeout: 600
   tags:
     - cms_apps
 
@@ -43,8 +44,8 @@
      body_format: json
   register: result
   until: result.status == 200
-  retries: 5
-  delay: 10
+  retries: 10
+  delay: 20
   changed_when: false
   tags:
     - cms_apps
@@ -53,10 +54,10 @@
   wait_for:
      host: "{{cms_config_proxycache_host}}"
      port: "{{cms_config_proxycache_serviceport}}"
-     delay: 10
+     delay: 20
+     timeout: 600
   tags:
     - cms_apps
-
 
 
 - name: start CMS WN
@@ -72,8 +73,8 @@
      body_format: json
   register: result
   until: result.status == 200
-  retries: 3
-  delay: 10
+  retries: 10
+  delay: 20
   changed_when: false
   tags:
     - cms_apps
