@@ -40,14 +40,6 @@
   lineinfile: dest=/etc/fuse.conf line="user_allow_other" state=present
   tags: cms_config
 
-- name: Launch cvms_config chksetup
-  command: cvmfs_config chksetup
-  tags: cms_config
-
-- name: Restart autofs 
-  service: name=autofs state=restarted 
-  tags: cms_config
-
 - name: wait for cms squid to be up and running
   wait_for: 
      host: "{{cms_config_mysquid_host}}" 
@@ -57,19 +49,18 @@
   tags:
     - cms_config
 
+- name: Launch cvms_config chksetup
+  command: cvmfs_config chksetup
+  tags: cms_config
+
+- name: Restart autofs 
+  service: name=autofs state=restarted 
+  tags: cms_config
+
 - name: Launch cvmfs_config probe
   command: cvmfs_config probe
   tags: cms_config
 
-#- name: create certificate file
-#  blockinfile:
-#    dest: '{{cms_config_certificate_path}}'
-#    create: yes
-#    mode: 0600
-#    content: |
-#      -----BEGIN CERTIFICATE-----
-#       -----END CERTIFICATE-----
-#  tags: cms_config
 
 - name: Set wide-system environment vars
   blockinfile:
