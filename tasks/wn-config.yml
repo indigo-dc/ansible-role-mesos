@@ -48,6 +48,15 @@
   service: name=autofs state=restarted 
   tags: cms_config
 
+- name: wait for cms squid to be up and running
+  wait_for: 
+     host: "{{cms_config_mysquid_host}}" 
+     port: "{{cms_config_mysquid_port}}"
+     delay: 20
+     timeout: 600
+  tags:
+    - cms_config
+
 - name: Launch cvmfs_config probe
   command: cvmfs_config probe
   tags: cms_config
