@@ -63,7 +63,7 @@
 - name: start CMS WN
   run_once: true
   uri:
-     url: "https://marathon.service.consul:{{marathon_https_port}}/v2/apps/cmswnandrew"
+     url: "https://marathon.service.consul:{{marathon_https_port}}/v2/apps/cmswn"
      user: "{{marathon_username}}"
      password: "{{marathon_password}}"
      validate_certs: "no"
