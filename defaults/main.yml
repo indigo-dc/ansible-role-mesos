@@ -14,7 +14,7 @@ cms_config_stageoutserver: "storm-fe-cms.cr.cnaf.infn.it"
 cms_config_stageoutprefix: "srm://storm-fe-cms.cr.cnaf.infn.it:8444/srm/managerv2?SFN=/cmsdisk/"
 
 cms_config_proxycache_host: "localhost"
-cms_config_proxycache_port: 8080
+cms_config_proxycache_port: 80
 cms_config_proxycache_serviceport: 8080
 #cms_config_iamtoken: NO DEFAULT
 
