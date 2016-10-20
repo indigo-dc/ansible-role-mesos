@@ -19,6 +19,6 @@ cms_config_proxycache_serviceport: 8080
 #cms_config_iamtoken: NO DEFAULT
 
 cms_config_squid_image: "spiga/frontiersquid_v4"
-cms_config_wn_image: "spiga/cmsmesos_v3"
+cms_config_wn_image: "spiga/cmswn"
 cms_config_proxycache_image: "spiga/certcache"
 
