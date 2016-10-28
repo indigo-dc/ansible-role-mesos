@@ -40,14 +40,25 @@
   lineinfile: dest=/etc/fuse.conf line="user_allow_other" state=present
   tags: cms_config
 
-- name: wait for cms squid to be up and running
+- name: wait for cms squid to be up and running (ansible > 2.1.0.0)
   wait_for: 
      host: "{{cms_config_mysquid_host}}" 
      port: "{{cms_config_mysquid_port}}"
      delay: 20
      timeout: 600
+  when: ansible_version > "2.1.0.0"
   tags:
     - cms_config
+
+- name: wait for cms squid to be up and running using nc
+  command: nc -z {{cms_config_mysquid_host}} {{cms_config_mysquid_port}}
+  register: result
+  until: result.rc == 0
+  delay: 20
+  retries: 20
+  when: ansible_version <= "2.1.0.0"
+  tags:
+    - cms_apps
 
 - name: Launch cvms_config chksetup
   command: cvmfs_config chksetup
