@@ -25,6 +25,7 @@
      port: "{{cms_config_mysquid_port}}"
      delay: 20
      timeout: 600
+     connect_timeout: 10
   tags:
     - cms_apps
 
@@ -54,6 +55,7 @@
      port: "{{cms_config_proxycache_serviceport}}"
      delay: 20
      timeout: 600
+     connect_timeout: 10
   tags:
     - cms_apps
 
