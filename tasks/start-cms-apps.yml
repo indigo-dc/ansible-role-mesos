@@ -1,7 +1,5 @@
 ---
 
-- debug: msg="Variable cms_config_mysquid_port is {{ cms_config_mysquid_port }}"
-
 - name: start CMS squid
   run_once: true
   uri: 
