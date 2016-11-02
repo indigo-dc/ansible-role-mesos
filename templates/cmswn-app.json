@@ -1,6 +1,6 @@
 {
         "id": "cmswn",
-        "cmd": "/root/launchAndrew_spiga.sh",
+        "cmd": "/root/launch_cmswn.sh",
         "cpus": 1.00,
         "mem": 2048,
         "instances": 1,
