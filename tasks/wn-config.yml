@@ -55,7 +55,7 @@
   register: result
   until: result.rc == 0
   delay: 20
-  retries: 20
+  retries: 40
   when: ansible_version <= "2.1.0.0"
   tags:
     - cms_apps
