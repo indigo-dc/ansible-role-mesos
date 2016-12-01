@@ -5,6 +5,7 @@
 #cms_config_cms_local_site: MANDATORY - NO DEFAULT AVAILABLE
 #cms_config_stageoutsite: MANDATORY - NO DEFAULT AVAILABLE
 #cms_config_stageoutserver: MANDATORY - NO DEFAULT AVAILABLE 
+#cms_config_stageoutprefix: MANDATORY - NO DEFAULT AVAILABLE 
 #cms_config_iamtoken: MANDATORY - NO DEFAULT AVAILABLE
 ####
 
@@ -14,8 +15,6 @@ cms_config_cvmfs_repositories: "cms"
 cms_config_mysquid_host: "localhost"
 cms_config_mysquid_port: 3128
 cms_config_mysquid: "http://{{cms_config_mysquid_host}}:{{cms_config_mysquid_port}}"
-
-cms_config_stageoutprefix: "srm://storm-fe-cms.cr.cnaf.infn.it:8444/srm/managerv2?SFN=/cmsdisk/"
 
 cms_config_proxycache_host: "localhost"
 cms_config_proxycache_port: 80
