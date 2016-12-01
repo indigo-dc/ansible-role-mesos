@@ -7,15 +7,24 @@ Configure CVMFS,  ENV Variables,  TFC, Proxy, etc for CMS
 Role Variables
 --------------
 
-- `cms_config_cvmfs_http_proxy` (default: "http://cream-bdii.pg.infn.it:3128")
+Mandatory variables:
+
+- `cms_config_cms_local_site`: MANDATORY - NO DEFAULT AVAILABLE
+- `cms_config_stageoutsite`: MANDATORY - NO DEFAULT AVAILABLE
+- `cms_config_stageoutserver`: MANDATORY - NO DEFAULT AVAILABLE 
+- `cms_config_stageoutprefix`: MANDATORY - NO DEFAULT AVAILABLE
+- `cms_config_iamtoken`: MANDATORY - NO DEFAULT AVAILABLE
+
+Optional variables:
 - `cms_config_cvmfs_repositories` (default: "cms")
-- `cms_config_certificate_path` (default: "/root/.globus/spiga_x509up_u16858")
-- `cms_config_cms_local_site` (default: "T3_IT_Spiga")
-- `cms_config_mysquid` (default: "http://cream-bdii.pg.infn.it:3128")
-- `cms_config_stageoutsite` (default: "T1_IT_CNAF_Disk")
-- `cms_config_stageoutserver` (default: "storm-fe-cms.cr.cnaf.infn.it")
-- `cms_config_stageoutprefix` (default: "srm://storm-fe-cms.cr.cnaf.infn.it:8444/srm/managerv2?SFN=/cmsdisk/")
-- `cms_config_vomsproxydir` (default: "/root/.globus")
+- `cms_config_mysquid_host` (default: "localhost")
+- `cms_config_mysquid_port` (default: 3128)
+- `cms_config_proxycache_host` (default: "localhost")
+- `cms_config_proxycache_port` (default: 80)
+- `cms_config_proxycache_serviceport` (default: 8080)
+- `cms_config_squid_image` (default: "spiga/frontiersquidv1")
+- `cms_config_wn_image` (default: "spiga/cmswndemo_v2")
+- `cms_config_proxycache_image` (default: "spiga/ttsinterface_v1")
 
 
 Dependencies
@@ -30,7 +39,7 @@ This is an example of how to use `cms_config` role:
 
     - hosts: servers
       roles:
-         - { role: indigo-dc.cms_config, cms_config_cms_local_site: "MY_SITE" }
+         - { role: indigo-dc.cms_config, cms_config_cms_local_site: "MY_SITE", cms_config_stageoutsite: "MY_STAGEOUTSITE", cms_config_stageoutserver: "MY_STAGEOUTSERVER", cms_config_stageoutprefix: "MY_STAGEOUT_PREFIX", cms_config_iamtoken: "MY_IAM_TOKEN"  }
 
 License
 -------
