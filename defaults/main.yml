@@ -1,22 +1,25 @@
 ---
 # defaults file for cms_config
 
+#### MANDATORY VARS: NO DEFAULT AVAILABLE:
+#cms_config_cms_local_site: MANDATORY - NO DEFAULT AVAILABLE
+#cms_config_stageoutsite: MANDATORY - NO DEFAULT AVAILABLE
+#cms_config_stageoutserver: MANDATORY - NO DEFAULT AVAILABLE 
+#cms_config_iamtoken: MANDATORY - NO DEFAULT AVAILABLE
+####
+
 cms_config_cvmfs_http_proxy: "http://{{cms_config_mysquid_host}}:{{cms_config_mysquid_port}}"
 cms_config_cvmfs_repositories: "cms"
 
-
-cms_config_cms_local_site: "T3_IT_Spiga"
-cms_config_mysquid_host: "cream-bdii.pg.infn.it"
+cms_config_mysquid_host: "localhost"
 cms_config_mysquid_port: 3128
 cms_config_mysquid: "http://{{cms_config_mysquid_host}}:{{cms_config_mysquid_port}}"
-cms_config_stageoutsite: "T1_IT_CNAF_Disk"
-cms_config_stageoutserver: "storm-fe-cms.cr.cnaf.infn.it"
+
 cms_config_stageoutprefix: "srm://storm-fe-cms.cr.cnaf.infn.it:8444/srm/managerv2?SFN=/cmsdisk/"
 
 cms_config_proxycache_host: "localhost"
 cms_config_proxycache_port: 80
 cms_config_proxycache_serviceport: 8080
-#cms_config_iamtoken: NO DEFAULT
 
 cms_config_squid_image: "spiga/frontiersquidv1"
 cms_config_wn_image: "spiga/cmswndemo_v2"
