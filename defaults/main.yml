@@ -51,3 +51,12 @@ mesos_quorum: "
 {{ ( mesos_master_nodes|count / 2) | round(0, 'ceil') | int }}
 {%- endif -%}
 "
+
+mesos_enable_dvdi_mod: 'no'
+os_auth_url: ''
+os_username: ''
+os_password: ''
+os_tenant_name: ''
+os_region_name: ''
+os_availability_zone: 'nova'
+

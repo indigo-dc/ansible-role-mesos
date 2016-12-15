@@ -43,6 +43,48 @@
       MESOS_IP: "{{ mesos_ip }}"
       MESOS_WORK_DIR: "{{ mesos_slave_work_dir }}"
       MESOS_HOSTNAME: "{{ mesos_ip }}"
+  when: mesos_enable_dvdi_mod == 'no'
   tags:
     - mesos-slave
+
+
+- name: run mesos-slave container with rex-ray enabled
+  docker:
+    name: mesos-slave
+    image: "marica/mesos-slave:rexray"
+    state: reloaded
+    privileged: true
+    pid: host
+    restart_policy: always
+    volumes:
+    - "/sys/fs/cgroup:/sys/fs/cgroup"
+    - "/var/run/docker.sock:/var/run/docker.sock"
+    - "{{ mesos_slave_work_dir }}:{{ mesos_slave_work_dir }}"
+    - "{{ mesos_log_dir }}:{{ mesos_log_dir }}"
+    - "/run/docker/plugins:/run/docker/plugins"
+    - "/var/run/rexray:/var/run/rexray"
+    - "/var/lib/rexray:/var/lib/rexray" # to be shared 
+    - "/dev:/dev"
+    net: "host"
+    env:
+      MESOS_MASTER: "zk://{{ zookeeper_peers_nodes }}/mesos"
+      MESOS_EXECUTOR_REGISTRATION_TIMEOUT: "{{ mesos_executor_registration_timeout }}"
+      MESOS_CONTAINERIZERS: "{{ mesos_containerizers }}"
+      MESOS_LOG_DIR: "{{ mesos_log_dir }}"
+      MESOS_docker_mesos_image: "{{ mesos_slave_image }}"
+      MESOS_IP: "{{ mesos_ip }}"
+      MESOS_WORK_DIR: "{{ mesos_slave_work_dir }}"
+      MESOS_HOSTNAME: "{{ mesos_ip }}"
+      MESOS_MODULES: "file:///usr/lib/dvdi-mod.json"
+      MESOS_ISOLATION: "com_emccode_mesos_DockerVolumeDriverIsolator"
+      OS_AUTH_URL: "{{os_auth_url}}"
+      OS_USERNAME: "{{os_username}}"
+      OS_PASSWORD: "{{os_password}}"
+      OS_TENANT_NAME: "{{os_tenant_name}}"
+      OS_REGION_NAME: "{{os_region_name}}"
+      OS_AVAILABILITY_ZONE: "{{os_availability_zone}}"
+  when: mesos_enable_dvdi_mod == 'yes'
+  tags:
+    - mesos-slave
+
 
