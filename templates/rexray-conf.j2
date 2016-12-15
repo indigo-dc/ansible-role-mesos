@@ -1,0 +1,13 @@
+---
+# {{ ansible_managed }}
+rexray:
+  logLevel: warn
+  storageDrivers:
+openstack:
+  authURL: {{ mesos_rexray_os_authurl }}
+  userName: {{ mesos_rexray_os_username }}
+  password: {{ mesos_rexray_os_password }}
+  tenantName: {{ mesos_rexray_os_tenantname }}
+  regionName: {{ mesos_rexray_os_regionname }}
+  availabilityZoneName: {{ mesos_rexray_os_availabilityzonename }}
+

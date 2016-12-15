@@ -12,3 +12,5 @@
 
 - include: slave.yml
   when: mesos_install_mode == "slave"
+  tags: 
+   - mesos-slave
