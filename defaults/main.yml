@@ -72,5 +72,5 @@ mesos_rexray_os_username: ''
 mesos_rexray_os_password: ''
 mesos_rexray_os_tenantname: ''
 mesos_rexray_os_regionname: ''
-mesos_rexray_os_availabilityzone: 'nova'
+mesos_rexray_os_availabilityzonename: 'nova'
 
