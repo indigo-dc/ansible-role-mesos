@@ -20,6 +20,8 @@ install:
 
   # Create ansible.cfg with correct roles_path
   - printf '[defaults]\nroles_path=../' >ansible.cfg
+ 
+  - ansible-galaxy install indigo-dc.docker
 
 script:
   # Basic role syntax check
