@@ -6,13 +6,36 @@
   tags:
     - mesos-master
 
+# Module "docker" is deprecated, use "docker_container" instead
+#- name: run mesos-master container
+#  docker:
+#    name: mesos-master
+#    image: "{{ mesos_master_image }}"
+#    detach: true
+#    state: reloaded
+#    net: "host"
+#    volumes:
+#    - "{{ mesos_master_work_dir }}:{{ mesos_master_work_dir }}"
+#    - "{{ mesos_log_dir }}:{{ mesos_log_dir }}"
+#    env:
+#      MESOS_HOSTNAME: "{{ mesos_hostname }}"
+#      MESOS_IP: "{{ mesos_ip }}"
+#      MESOS_CLUSTER: "{{ mesos_cluster_name }}"
+#      MESOS_ZK: "zk://{{ zookeeper_peers_nodes }}/mesos"
+#      MESOS_LOG_DIR: "{{ mesos_log_dir }}"
+#      MESOS_QUORUM: "{{ mesos_quorum }}"
+#      MESOS_WORK_DIR: "{{ mesos_master_work_dir }}"
+#    restart_policy: always
+#  tags:
+#    - mesos-master
+
 - name: run mesos-master container
-  docker:
+  docker_container:
     name: mesos-master
     image: "{{ mesos_master_image }}"
     detach: true
-    state: reloaded
-    net: "host"
+    state: started
+    network_mode: "host"
     volumes:
     - "{{ mesos_master_work_dir }}:{{ mesos_master_work_dir }}"
     - "{{ mesos_log_dir }}:{{ mesos_log_dir }}"

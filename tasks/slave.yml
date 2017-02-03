@@ -20,21 +20,47 @@
   tags:
     - mesos-slave
 
+# Module "docker" is deprecated, use "docker_container" instead
+#- name: run mesos-slave container
+#  docker:
+#    name: mesos-slave
+#    image: "{{ mesos_slave_image }}"
+#    state: reloaded
+#    privileged: true
+#    pid: host
+#    restart_policy: always
+#    volumes:
+#    - "/sys/fs/cgroup:/sys/fs/cgroup"
+#    - "/var/run/docker.sock:/var/run/docker.sock"
+#    - "{{ mesos_slave_work_dir }}:{{ mesos_slave_work_dir }}"
+#    - "{{ mesos_log_dir }}:{{ mesos_log_dir }}"
+#    net: "host"
+#    env:
+#      MESOS_MASTER: "zk://{{ zookeeper_peers_nodes }}/mesos"
+#      MESOS_EXECUTOR_REGISTRATION_TIMEOUT: "{{ mesos_executor_registration_timeout }}"
+#      MESOS_CONTAINERIZERS: "{{ mesos_containerizers }}"
+#      MESOS_LOG_DIR: "{{ mesos_log_dir }}"
+#      MESOS_docker_mesos_image: "{{ mesos_slave_image }}"
+#      MESOS_IP: "{{ mesos_ip }}"
+#      MESOS_WORK_DIR: "{{ mesos_slave_work_dir }}"
+#      MESOS_HOSTNAME: "{{ mesos_ip }}"
+#  tags:
+#    - mesos-slave
 
 - name: run mesos-slave container
-  docker:
+  docker_container:
     name: mesos-slave
     image: "{{ mesos_slave_image }}"
-    state: reloaded
+    state: started
     privileged: true
-    pid: host
+    pid_mode: host
     restart_policy: always
     volumes:
     - "/sys/fs/cgroup:/sys/fs/cgroup"
     - "/var/run/docker.sock:/var/run/docker.sock"
     - "{{ mesos_slave_work_dir }}:{{ mesos_slave_work_dir }}"
     - "{{ mesos_log_dir }}:{{ mesos_log_dir }}"
-    net: "host"
+    network_mode: "host"
     env:
       MESOS_MASTER: "zk://{{ zookeeper_peers_nodes }}/mesos"
       MESOS_EXECUTOR_REGISTRATION_TIMEOUT: "{{ mesos_executor_registration_timeout }}"
@@ -44,6 +70,7 @@
       MESOS_IP: "{{ mesos_ip }}"
       MESOS_WORK_DIR: "{{ mesos_slave_work_dir }}"
       MESOS_HOSTNAME: "{{ mesos_ip }}"
+      MESOS_attributes: "{{ mesos_attributes }}"
+      MESOS_resources: "{{ mesos_resources }}"
   tags:
     - mesos-slave
-
