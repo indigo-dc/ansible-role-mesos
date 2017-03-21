@@ -17,15 +17,15 @@ Common vars:
 Master
 
 - `mesos_cluster_name` (default: "IndigoCluster")
-- `mesos_version` (default: latest)
-- `mesos_master_image` (default: "indigodatacloud/mesos-master:{{ mesos_version }}")
+- `mesos_image_version` (default: latest)
+- `mesos_master_image` (default: "indigodatacloud/mesos-master:{{ mesos_image_version }}")
 - `mesos_master_quorum` (optional)
 
 Slave
 
 - `mesos_executor_registration_timeout` (default: 10mins)
-- `mesos_version` (default: latest)
-- `mesos_slave_image`(default: "indigodatacloud/mesos-slave:{{ mesos_version }})
+- `mesos_image_version` (default: latest)
+- `mesos_slave_image`(default: "indigodatacloud/mesos-slave:{{ mesos_image_version }})
 - `mesos_containerizers` (default: "docker,mesos")
 - `mesos_slave_work_dir` (default: "/tmp/mesos")
 - `mesos_masters_list`

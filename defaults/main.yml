@@ -17,21 +17,21 @@ mesos_cluster_name: "IndigoCluster"
 mesos_ip: "{{ ansible_default_ipv4.address }}"
 mesos_hostname: "{{ ansible_default_ipv4.address }}"
 
-mesos_version: 'latest'
+mesos_image_version: 'latest'
 
 # Defaults file for mesos-salve
 mesos_slave_port: 5051
 mesos_containerizers: "docker,mesos"
 mesos_slave_work_dir: "/var/lib/mesos"
 mesos_log_dir: "/var/log/mesos"
-mesos_slave_image: "indigodatacloud/mesos-slave:{{ mesos_version }}"
+mesos_slave_image: "indigodatacloud/mesos-slave:{{ mesos_image_version }}"
 
 # Defaults file for mesos-master
 mesos_zookeeper_group: zookeeper_servers
 mesos_master_port: 5050
 mesos_master_work_dir: "/var/lib/mesos"
 mesos_master_offer_timeout: 30secs
-mesos_master_image: "indigodatacloud/mesos-master:{{ mesos_version }}"
+mesos_master_image: "indigodatacloud/mesos-master:{{ mesos_image_version }}"
 
 mesos_master_nodes: "
 {%- if mesos_masters_list is defined -%}
@@ -51,3 +51,26 @@ mesos_quorum: "
 {{ ( mesos_master_nodes|count / 2) | round(0, 'ceil') | int }}
 {%- endif -%}
 "
+
+mesos_version: "1.1.0"
+
+# Debian
+mesos_package_version: "2.0.107"
+mesosphere_apt_url: "http://repos.mesosphere.com/{{ ansible_distribution | lower }}"
+mesos_os_distribution: "{{ ansible_distribution | lower }}"
+mesos_os_version: "{{ ansible_distribution_version.split('.') | join('') }}"
+mesos_apt_package: "mesos={{ mesos_version }}-{{ mesos_package_version }}.{{ mesos_os_distribution }}{{ mesos_os_version }}"
+
+## Rex-ray driver
+mesos_enable_dvdi_mod: 'yes'
+mesos_module_dvdi_version: '0.4.7'
+rexray_channel: stable
+rexray_version: 0.3.3
+rexray_pkg_url: https://dl.bintray.com/emccode/rexray
+mesos_rexray_os_authurl: ''
+mesos_rexray_os_username: ''
+mesos_rexray_os_password: ''
+mesos_rexray_os_tenantname: ''
+mesos_rexray_os_regionname: ''
+mesos_rexray_os_availabilityzonename: 'nova'
+

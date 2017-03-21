@@ -4,8 +4,11 @@
 - name: Ensure local certs directory exists
   file: state=directory path=/usr/local/share/ca-certificates
 
-- name: Install rootCA certificate
-  copy: src=rootCA.crt dest=/usr/local/share/ca-certificates/rootCA.crt
+###### TEMPORARY
+
+- get_url: dest=/usr/local/share/ca-certificates/INFN-CA-2015.crt url=https://security.fi.infn.it/CA/mgt/INFN-CA-2015.pem
+
+###
 
 - name: Update cert index
   shell: /usr/sbin/update-ca-certificates
@@ -16,33 +19,80 @@
     path: "{{ mesos_slave_work_dir }}"
     state: directory
     mode: 0755
-  tags:
-    - mesos-slave
 
+- name: Add apt-key
+  apt_key: id=E56151BF keyserver=keyserver.ubuntu.com state=present
 
-- name: run mesos-slave container
-  docker:
-    name: mesos-slave
-    image: "{{ mesos_slave_image }}"
-    state: reloaded
-    privileged: true
-    pid: host
-    restart_policy: always
-    volumes:
-    - "/sys/fs/cgroup:/sys/fs/cgroup"
-    - "/var/run/docker.sock:/var/run/docker.sock"
-    - "{{ mesos_slave_work_dir }}:{{ mesos_slave_work_dir }}"
-    - "{{ mesos_log_dir }}:{{ mesos_log_dir }}"
-    net: "host"
-    env:
-      MESOS_MASTER: "zk://{{ zookeeper_peers_nodes }}/mesos"
-      MESOS_EXECUTOR_REGISTRATION_TIMEOUT: "{{ mesos_executor_registration_timeout }}"
-      MESOS_CONTAINERIZERS: "{{ mesos_containerizers }}"
-      MESOS_LOG_DIR: "{{ mesos_log_dir }}"
-      MESOS_docker_mesos_image: "{{ mesos_slave_image }}"
-      MESOS_IP: "{{ mesos_ip }}"
-      MESOS_WORK_DIR: "{{ mesos_slave_work_dir }}"
-      MESOS_HOSTNAME: "{{ mesos_ip }}"
-  tags:
-    - mesos-slave
+- name: Add mesosphere repo
+  apt_repository: repo='deb {{ mesosphere_apt_url }} {{ ansible_distribution_release | lower }} main' state=present update_cache=yes
+
+- name: Install Debian OS packages
+  apt: pkg={{ item }} state=present update_cache=yes cache_valid_time=3600
+  with_items:
+    - wget
+    - curl
+    - unzip
+    - python-setuptools
+    - python-dev
+    - "{{ mesos_apt_package }}"
+
+- name: Remove Mesos ZK File
+  file: state=absent path=/etc/mesos/zk
+
+- file: path=/etc/mesos/zk state=touch
+
+- name: Remove Default Mesos-Master Config
+  file: state=absent path=/etc/mesos-master/
+
+- name: Remove Default Mesos-Slave Config
+  file: state=absent path=/etc/mesos-slave/
+
+# == Configure and recreate
+- name: Mesos default config file
+  template: src=mesos-slave-env.j2 dest=/etc/default/mesos
+  notify:
+    - Restart mesos-slave
+
+- include: install-rexray.yml
+  when: mesos_enable_dvdi_mod == 'yes'
+
+#- name: run mesos-slave container with rex-ray enabled
+#  docker:
+#    name: mesos-slave
+#    image: "marica/mesos-slave:rexray"
+#    state: reloaded
+#    privileged: true
+#    pid: host
+#    restart_policy: always
+#    volumes:
+#    - "/sys/fs/cgroup:/sys/fs/cgroup"
+#    - "/var/run/docker.sock:/var/run/docker.sock"
+#    - "{{ mesos_slave_work_dir }}:{{ mesos_slave_work_dir }}"
+#    - "{{ mesos_log_dir }}:{{ mesos_log_dir }}"
+#    - "/run/docker/plugins:/run/docker/plugins"
+#    - "/var/run/rexray:/var/run/rexray"
+#    - "/var/lib/rexray:/var/lib/rexray" # to be shared 
+#    - "/dev:/dev"
+#    net: "host"
+#    env:
+#      MESOS_MASTER: "zk://{{ zookeeper_peers_nodes }}/mesos"
+#      MESOS_EXECUTOR_REGISTRATION_TIMEOUT: "{{ mesos_executor_registration_timeout }}"
+#      MESOS_CONTAINERIZERS: "{{ mesos_containerizers }}"
+#      MESOS_LOG_DIR: "{{ mesos_log_dir }}"
+#      MESOS_docker_mesos_image: "{{ mesos_slave_image }}"
+#      MESOS_IP: "{{ mesos_ip }}"
+#      MESOS_WORK_DIR: "{{ mesos_slave_work_dir }}"
+#      MESOS_HOSTNAME: "{{ mesos_ip }}"
+#      MESOS_MODULES: "file:///usr/lib/dvdi-mod.json"
+#      MESOS_ISOLATION: "com_emccode_mesos_DockerVolumeDriverIsolator"
+#      OS_AUTH_URL: "{{os_auth_url}}"
+#      OS_USERNAME: "{{os_username}}"
+#      OS_PASSWORD: "{{os_password}}"
+#      OS_TENANT_NAME: "{{os_tenant_name}}"
+#      OS_REGION_NAME: "{{os_region_name}}"
+#      OS_AVAILABILITY_ZONE: "{{os_availability_zone}}"
+#  when: mesos_enable_dvdi_mod == 'yes'
+#  tags:
+#    - mesos-slave
+#
 
