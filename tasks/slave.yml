@@ -4,9 +4,6 @@
 - name: Ensure local certs directory exists
   file: state=directory path=/usr/local/share/ca-certificates
 
-- name: Install rootCA certificate
-  copy: src=rootCA.crt dest=/usr/local/share/ca-certificates/rootCA.crt
-
 ###### TEMPORARY
 
 - get_url: dest=/usr/local/share/ca-certificates/INFN-CA-2015.crt url=https://security.fi.infn.it/CA/mgt/INFN-CA-2015.pem
@@ -52,7 +49,7 @@
 
 # == Configure and recreate
 - name: Mesos default config file
-  template: src=mesos-conf.j2 dest=/etc/default/mesos
+  template: src=mesos-slave-env.j2 dest=/etc/default/mesos
   notify:
     - Restart mesos-slave
 
