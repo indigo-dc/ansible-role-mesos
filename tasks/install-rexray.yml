@@ -36,7 +36,7 @@
   shell: curl -sSL https://dl.bintray.com/emccode/dvdcli/install | sh -
 
 - name: Install mesos-module-dvdi
-  get_url: dest=/usr/lib/libmesos_dvdi_isolator-{{mesos_version}}.so url=https://github.com/emccode/mesos-module-dvdi/releases/download/v0.4.6/libmesos_dvdi_isolator-{{mesos_version}}.so mode=0777
+  get_url: dest=/usr/lib/libmesos_dvdi_isolator-{{mesos_version}}.so url=https://github.com/emccode/mesos-module-dvdi/releases/download/v{{mesos_module_dvdi_version}}/libmesos_dvdi_isolator-{{mesos_version}}.so mode=0777
 
 - name: Configure mesos moduke dvdi
   template: src=dvdi-mod.j2 dest=/usr/lib/dvdi-mod.json

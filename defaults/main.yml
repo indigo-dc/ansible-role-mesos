@@ -52,11 +52,10 @@ mesos_quorum: "
 {%- endif -%}
 "
 
-
-mesos_version: "0.28.2"
+mesos_version: "1.1.0"
 
 # Debian
-mesos_package_version: "2.0.27"
+mesos_package_version: "2.0.107"
 mesosphere_apt_url: "http://repos.mesosphere.com/{{ ansible_distribution | lower }}"
 mesos_os_distribution: "{{ ansible_distribution | lower }}"
 mesos_os_version: "{{ ansible_distribution_version.split('.') | join('') }}"
@@ -64,6 +63,7 @@ mesos_apt_package: "mesos={{ mesos_version }}-{{ mesos_package_version }}.{{ mes
 
 ## Rex-ray driver
 mesos_enable_dvdi_mod: 'yes'
+mesos_module_dvdi_version: '0.4.7'
 rexray_channel: stable
 rexray_version: 0.3.3
 rexray_pkg_url: https://dl.bintray.com/emccode/rexray
