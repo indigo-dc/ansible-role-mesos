@@ -54,7 +54,7 @@
     - Restart mesos-slave
 
 - include: install-rexray.yml
-  when: mesos_enable_dvdi_mod == 'yes'
+  when: mesos_enable_dvdi_mod == 'True'
 
 #- name: run mesos-slave container with rex-ray enabled
 #  docker:
