@@ -8,7 +8,7 @@ export  MESOS_LOG_DIR="{{ mesos_log_dir }}"
 export  MESOS_IP="{{ mesos_ip }}"
 export  MESOS_WORK_DIR="{{ mesos_slave_work_dir }}"
 export  MESOS_HOSTNAME="{{ mesos_ip }}"
-{% if   mesos_enable_dvdi_mod == 'yes' %}
+{% if   mesos_enable_dvdi_mod == 'True' %}
 export  MESOS_MODULES="file:///usr/lib/dvdi-mod.json"
 export  MESOS_ISOLATION="com_emccode_mesos_DockerVolumeDriverIsolator"
 {% endif %}
