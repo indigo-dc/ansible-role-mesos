@@ -69,12 +69,8 @@
   tags: cms_config
   
 - name: mount CVMFS
-  mount:
-    path: /cvmfs/cms.cern.ch
-    src: cms.cern.ch
-    fstype: cvmfs
-    state: mounted
-    tags: cms_config
+  command: mount -t cvmfs cms.cern.ch /cvmfs/cms.cern.ch/
+  tags: cms_config
 
 #- name: Launch cvms_config chksetup
 #  command: cvmfs_config chksetup
