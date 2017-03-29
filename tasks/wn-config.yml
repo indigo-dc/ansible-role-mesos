@@ -68,6 +68,10 @@
 #  service: name=autofs state=restarted 
 #  tags: cms_config
 
+- name: Stop autofs
+  service: name=autofs state=stopped
+  tags: cms_config
+
 - name: Launch cvmfs_config probe
   command: cvmfs_config probe
   tags: cms_config
