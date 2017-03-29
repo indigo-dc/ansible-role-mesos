@@ -60,21 +60,34 @@
   tags:
     - cms_apps
 
-- name: Launch cvms_config chksetup
-  command: cvmfs_config chksetup
+- name: Stop autofs
+  service: name=autofs state=stopped
   tags: cms_config
+
+- name: Creates CVMFS mountpoint
+  file: path=/cvmfs/cms.cern.ch state=directory owner=cvmfs group=cvmfs recurse=yes
+  tags: cms_config
+  
+- name: mount CVMFS
+  mount:
+    path: /cvmfs/cms.cern.ch
+    src: cms.cern.ch
+    fstype: cvmfs
+    opts: noatime
+    state: present
+    tags: cms_config
+
+#- name: Launch cvms_config chksetup
+#  command: cvmfs_config chksetup
+#  tags: cms_config
 
 #- name: Restart autofs 
 #  service: name=autofs state=restarted 
 #  tags: cms_config
 
-- name: Stop autofs
-  service: name=autofs state=stopped
-  tags: cms_config
-
-- name: Launch cvmfs_config probe
-  command: cvmfs_config probe
-  tags: cms_config
+#- name: Launch cvmfs_config probe
+#  command: cvmfs_config probe
+#  tags: cms_config
 
 
 - name: Set wide-system environment vars
@@ -92,19 +105,6 @@
 #- name: 'Add cron to avoid [cannot open directory /cvmfs/cms.cern.ch: Too many levels of symbolic links]'
 #  cron: name="list dir cvmfs/cms.cern.ch" job="ls /cvmfs/cms.cern.ch/ > /dev/null" state=present
 #  tags: cms_config
-
-- name: Creates CVMFS mountpoint
-  file: path=/cvmfs/cms.cern.ch state=directory owner=cvmfs group=cvmfs recurse=yes
-  tags: cms_config
-  
-- name: mount CVMFS
-  mount:
-    path: /cvmfs/cms.cern.ch
-    src: cms.cern.ch
-    fstype: cvmfs
-    opts: noatime
-    state: present
-    tags: cms_config
 
 - name: copy the content of T3_IT_Opportunistic into /opt/exp_sw/cms/
   shell: cp -r -u /cvmfs/cms.cern.ch/SITECONF/T3_IT_Opportunistic/* /opt/exp_sw/cms/
