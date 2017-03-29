@@ -94,7 +94,12 @@
 #  tags: cms_config
 
 - name: Creates CVMFS mountpoint
+  file: path=/cvmfs state=directory
+  tags: cms_config
+
+- name: Creates CVMFS mountpoint_2
   file: path=/cvmfs/cms.cern.ch state=directory
+  tags: cms_config
 
 - name: mount CVMFS
   mount:
