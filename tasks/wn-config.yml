@@ -73,8 +73,7 @@
     path: /cvmfs/cms.cern.ch
     src: cms.cern.ch
     fstype: cvmfs
-    opts: noatime
-    state: present
+    state: mounted
     tags: cms_config
 
 #- name: Launch cvms_config chksetup
