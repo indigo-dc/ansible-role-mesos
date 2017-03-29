@@ -94,13 +94,9 @@
 #  tags: cms_config
 
 - name: Creates CVMFS mountpoint
-  file: path=/cvmfs state=directory
+  file: path=/cvmfs/cms.cern.ch state=directory owner=cvmfs group=cvmfs recurse=yes
   tags: cms_config
-
-- name: Creates CVMFS mountpoint_2
-  file: path=/cvmfs/cms.cern.ch state=directory
-  tags: cms_config
-
+  
 - name: mount CVMFS
   mount:
     path: /cvmfs/cms.cern.ch
@@ -108,6 +104,7 @@
     fstype: cvmfs
     opts: noatime
     state: present
+    tags: cms_config
 
 - name: copy the content of T3_IT_Opportunistic into /opt/exp_sw/cms/
   shell: cp -r -u /cvmfs/cms.cern.ch/SITECONF/T3_IT_Opportunistic/* /opt/exp_sw/cms/
