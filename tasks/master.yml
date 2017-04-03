@@ -11,6 +11,12 @@
     src=mesos-master-env.j2 dest=/etc/mesos/.mesosmenv
 
 
+
+- name: "Create mesos credentials file"
+  template:
+    src=mesos-credentials.j2 dest={{mesos_master_work_dir}}/credentials
+  when: mesos_authenticate_http == true
+
 - name: run mesos-master container
   docker_container:
     name: mesos-master

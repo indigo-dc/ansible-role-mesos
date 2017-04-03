@@ -6,3 +6,8 @@ MESOS_LOG_DIR={{ mesos_log_dir }}
 MESOS_QUORUM={{ mesos_quorum }}
 MESOS_WORK_DIR={{ mesos_master_work_dir }}
 MESOS_OFFER_TIMEOUT={{ mesos_master_offer_timeout }}
+{% if mesos_authenticate_http == true %}
+MESOS_AUTHENTICATE_HTTP_READWRITE=true
+MESOS_AUTHENTICATE_HTTP_READONLY=true
+MESOS_CREDENTIALS={{mesos_master_work_dir}}/credentials
+{% endif %}
