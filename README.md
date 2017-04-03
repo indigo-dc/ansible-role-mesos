@@ -21,6 +21,12 @@ Master
 - `mesos_master_image` (default: "indigodatacloud/mesos-master:{{ mesos_image_version }}")
 - `mesos_master_quorum` (optional)
 
+Enable/disable http authentication:
+
+- `mesos_authenticate_http` (default: true)
+- `mesos_username` (default: admin)
+- `mesos_password` (default: admin) 
+
 Slave
 
 - `mesos_executor_registration_timeout` (default: 10mins)
