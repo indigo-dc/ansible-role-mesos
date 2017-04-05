@@ -1,6 +1,6 @@
 ---
 - name: Restart mesos-slave
-  service: name=mesos-slave state=restarted
+  service: name=mesos-slave enabled=true state=restarted
 
 - name: restart rexray
   service: name=rexray state=restarted

@@ -7,7 +7,7 @@ zookeeper_peers_nodes: "
 	{%- if zookeeper_peers is defined -%}
             {% for host in zookeeper_peers %}{{host}}:{{zookeeper_client_port}}{% if not loop.last %},{% endif %}{% endfor %}
 	{%- else -%}
-            {%- for host in groups[zookeeper_server_group] -%}{{hostvars[host]['ansible_eth0']['ipv4']['address']}}:{{zookeeper_client_port}}{% if not loop.last %},{% endif %}{% endfor %} 
+            {%- for host in groups[zookeeper_server_group] -%}{{hostvars[host]['ansible_default_ipv4']['address']}}:{{zookeeper_client_port}}{% if not loop.last %},{% endif %}{% endfor %} 
 	{%- endif -%}
 "
 
@@ -63,7 +63,7 @@ mesosphere_apt_url: "http://repos.mesosphere.com/{{ ansible_distribution | lower
 mesos_os_distribution: "{{ ansible_distribution | lower }}"
 mesos_os_version: "{{ ansible_distribution_version.split('.') | join('') }}"
 mesos_apt_package: "mesos={{ mesos_version }}-{{ mesos_package_version }}.{{ mesos_os_distribution }}{{ mesos_os_version }}"
-
+mesos_rpm_package: "mesos-{{ mesos_version }}"
 ## Rex-ray driver
 mesos_enable_dvdi_mod: false
 mesos_module_dvdi_version: '0.4.7'

@@ -2,16 +2,16 @@
 # Tasks for Slave nodes
 
 - name: Ensure local certs directory exists
-  file: state=directory path=/usr/local/share/ca-certificates
+  file: state=directory path={{ trust_anchor_root_dir }}
 
 ###### TEMPORARY
 
-- get_url: dest=/usr/local/share/ca-certificates/INFN-CA-2015.crt url=https://security.fi.infn.it/CA/mgt/INFN-CA-2015.pem
+- get_url: dest={{trust_anchor_root_dir}}/INFN-CA-2015.crt url=https://security.fi.infn.it/CA/mgt/INFN-CA-2015.pem
 
 ###
 
 - name: Update cert index
-  shell: /usr/sbin/update-ca-certificates
+  command: "{{ update_root_trust_anchor }}"
 
 
 - name: create working dir
@@ -22,9 +22,11 @@
 
 - name: Add apt-key
   apt_key: id=E56151BF keyserver=keyserver.ubuntu.com state=present
+  when: ansible_distribution == 'Ubuntu'
 
 - name: Add mesosphere repo
   apt_repository: repo='deb {{ mesosphere_apt_url }} {{ ansible_distribution_release | lower }} main' state=present update_cache=yes
+  when: ansible_distribution == 'Ubuntu'
 
 - name: Install Debian OS packages
   apt: pkg={{ item }} state=present update_cache=yes cache_valid_time=3600
@@ -35,6 +37,16 @@
     - python-setuptools
     - python-dev
     - "{{ mesos_apt_package }}"
+  when: ansible_distribution == 'Ubuntu'
+
+
+- name: Add mesosphere repo
+  yum: name=http://repos.mesosphere.io/el/7/noarch/RPMS/mesosphere-el-repo-7-1.noarch.rpm state=present
+  when: ansible_os_family == 'RedHat'
+
+- name: Install RPM
+  yum: name={{mesos_rpm_package}} state=present
+  when: ansible_os_family == 'RedHat'
 
 - name: Remove Mesos ZK File
   file: state=absent path=/etc/mesos/zk
