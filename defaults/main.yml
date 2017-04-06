@@ -28,7 +28,7 @@ mesos_slave_image: "indigodatacloud/mesos-slave:{{ mesos_image_version }}"
 
 # Defaults file for mesos-master
 mesos_zookeeper_group: zookeeper_servers
-mesos_authenticate_http: true
+mesos_authenticate_http: false
 mesos_username: 'admin'
 mesos_password: 'admin'
 mesos_master_port: 5050
