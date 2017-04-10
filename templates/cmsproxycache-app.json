@@ -14,6 +14,8 @@
     },
    "env": {
         "IAMTOKEN": "{{ cms_config_iamtoken }}"
+        "IAM_CLIENT_ID": "{{ cms_config_iamclientid }}"
+        "IAM_CLIENT_SECRET": "{{ cms_config_iamclientsecret }}"
     },
     "cmd": "/root/start_apache.sh",
     "instances": 1,
