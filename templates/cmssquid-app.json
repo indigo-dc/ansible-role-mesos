@@ -6,8 +6,8 @@
         "image": "{{cms_config_squid_image}}",
         "network": "BRIDGE",
         "portMappings": [{
-          "containerPort": {{cms_config_mysquid_port}},
-          "servicePort": {{cms_config_mysquid_port}},
+          "containerPort": "{{cms_config_mysquid_port}}",
+          "servicePort": "{{cms_config_mysquid_port}}",
           "protocol": "tcp"
         }]
       }
