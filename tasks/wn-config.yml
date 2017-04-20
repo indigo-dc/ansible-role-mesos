@@ -45,7 +45,7 @@
   tags:
     - cms_config
 
-- name: wait for cms squid to be up and running using nc nc -z {{cms_config_mysquid_host}} {{cms_config_mysquid_port}}
+- name: wait for cms squid to be up and running using nc 
   command: nc -z {{cms_config_mysquid_host}} {{cms_config_mysquid_port}}
   register: result
   until: result.rc == 0
