@@ -25,15 +25,10 @@
   file:  path={{item}} state=directory mode=0755
   with_items:
     - /opt/exp_sw/cms
-#    - /root/.globus
   tags: cms_config
 
 - name: set CMS_LOCAL_SITE variable
   lineinfile: dest=/etc/cvmfs/config.d/cms.cern.ch.conf create=yes line="export CMS_LOCAL_SITE=/opt/exp_sw/cms"  
-  tags: cms_config
-
-- name: Update /etc/auto.master
-  lineinfile: dest=/etc/auto.master create=yes line="/cvmfs /etc/auto.cvmfs"
   tags: cms_config
 
 - name: Enable user_allow_other in fuse.conf
@@ -50,7 +45,7 @@
   tags:
     - cms_config
 
-- name: wait for cms squid to be up and running using nc
+- name: wait for cms squid to be up and running using nc 
   command: nc -z {{cms_config_mysquid_host}} {{cms_config_mysquid_port}}
   register: result
   until: result.rc == 0
@@ -60,18 +55,21 @@
   tags:
     - cms_apps
 
-- name: Launch cvms_config chksetup
-  command: cvmfs_config chksetup
+- name: Stop autofs
+  service: name=autofs state=stopped
   tags: cms_config
 
-- name: Restart autofs 
-  service: name=autofs state=restarted 
+- name: Creates CVMFS mountpoint
+  file: path=/cvmfs/cms.cern.ch state=directory owner=cvmfs group=cvmfs recurse=yes
   tags: cms_config
 
-- name: Launch cvmfs_config probe
-  command: cvmfs_config probe
+- name: mount CVMFS
+  command: mount -t cvmfs cms.cern.ch /cvmfs/cms.cern.ch/
+  register: result
+  until: result | success
+  retries: 10
+  delay: 10
   tags: cms_config
-
 
 - name: Set wide-system environment vars
   blockinfile:
@@ -83,10 +81,6 @@
       STAGEOUTSITE={{cms_config_stageoutsite}}
       STAGEOUTSERVER={{cms_config_stageoutserver}}
       STAGEOUTPREFIX={{cms_config_stageoutprefix}}
-  tags: cms_config
-
-- name: 'Add cron to avoid [cannot open directory /cvmfs/cms.cern.ch: Too many levels of symbolic links]'
-  cron: name="list dir cvmfs/cms.cern.ch" job="ls /cvmfs/cms.cern.ch/ > /dev/null" state=present
   tags: cms_config
 
 - name: copy the content of T3_IT_Opportunistic into /opt/exp_sw/cms/
