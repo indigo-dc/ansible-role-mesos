@@ -14,6 +14,8 @@ Mandatory variables:
 - `cms_config_stageoutserver`: MANDATORY - NO DEFAULT AVAILABLE 
 - `cms_config_stageoutprefix`: MANDATORY - NO DEFAULT AVAILABLE
 - `cms_config_iamtoken`: MANDATORY - NO DEFAULT AVAILABLE
+- `cms_config_iam_client_id`: MANDATORY - NO DEFAULT AVAILABLE
+- `cms_config_iam_client_secret`: MANDATORY - NO DEFAULT AVAILABLE
 
 Optional variables:
 - `cms_config_cvmfs_repositories` (default: "cms")
