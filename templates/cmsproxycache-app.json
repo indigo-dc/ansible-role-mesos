@@ -17,6 +17,9 @@
         "IAM_CLIENT_ID": "{{ cms_config_iam_client_id }}",
         "IAM_CLIENT_SECRET": "{{ cms_config_iam_client_secret }}"
     },
+   "labels":{
+      "HAPROXY_GROUP":"external"
+    },
     "cmd": "/root/start_apache.sh",
     "instances": 1,
     "cpus": 1.00,
