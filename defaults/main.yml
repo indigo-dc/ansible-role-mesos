@@ -1,6 +1,10 @@
 ---
 # defaults file for cms_config
 
+marathon_username: admin
+marathon_port: 8080
+marathon_protocol: http
+
 #### MANDATORY VARS: NO DEFAULT AVAILABLE:
 #cms_config_cms_local_site: MANDATORY - NO DEFAULT AVAILABLE
 #cms_config_stageoutsite: MANDATORY - NO DEFAULT AVAILABLE
