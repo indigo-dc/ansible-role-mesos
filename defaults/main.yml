@@ -25,6 +25,6 @@ cms_config_proxycache_port: 80
 cms_config_proxycache_serviceport: 8080
 
 cms_config_squid_image: "spiga/frontiersquidv1"
-cms_config_wn_image: "spiga/cmswndemo_v2"
-cms_config_proxycache_image: "spiga/ttsinterface_v1"
+cms_config_wn_image: "ciangom/cmswnitb"
+cms_config_proxycache_image: "ciangom/ttsinterface"
 
