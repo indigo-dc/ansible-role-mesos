@@ -90,10 +90,12 @@
 - name: Update site-local-config.xml
   replace: dest=/opt/exp_sw/cms/JobConfig/site-local-config.xml regexp='{{item.regexp}}' replace='{{item.replace}}' backup=yes
   with_items:
-    - { regexp: '/cvmfs/cms.cern.ch/SITECONF/T3_IT_Opportunistic', replace: '/cvmfs/cms.cern.ch/SITECONF/local'} 
+    - { regexp: '/cvmfs/cms.cern.ch/SITECONF/T3_IT_Opportunistic', replace: '/cvmfs/cms.cern.ch/SITECONF/{{cms_config_stageoutsite}}'} 
     - { regexp: 'T3_IT_Opportunistic', replace: '{{cms_config_cms_local_site}}'}
+    - { regexp: 'T2_IT_Pisa', replace: '{{cms_config_stageoutsite}}' }
+    - { regexp: 'stormfe1.pi.infn.it', replace: '{{cms_config_stageoutserver}}'}
+    - { regexp: 'T1_IT_CNAF_Disk', replace: '{{cms_config_stageoutsite_bkp}}' }
     - { regexp: 'srm://storm-fe-cms.cr.cnaf.infn.it:8444/srm/managerv2?SFN=/cmsdisk/', replace: '{{cms_config_stageoutprefix}}'}
-    - { regexp: 'T1_IT_CNAF_Disk', replace: '{{cms_config_stageoutsite}}' }
-    - { regexp: 'storm-fe-cms.cr.cnaf.infn.it', replace: '{{cms_config_stageoutserver}}'}
+    - { regexp: 'storm-fe-cms.cr.cnaf.infn.it', replace: '{{cms_config_stageoutserver_bkp}}'}
   tags: cms_config
 
