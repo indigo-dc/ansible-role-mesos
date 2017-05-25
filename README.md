@@ -13,8 +13,9 @@ Mandatory variables:
 - `cms_config_stageoutsite`: MANDATORY - NO DEFAULT AVAILABLE
 - `cms_config_stageoutserver`: MANDATORY - NO DEFAULT AVAILABLE 
 - `cms_config_stageoutprefix`: MANDATORY - NO DEFAULT AVAILABLE
-- `cms_config_stageoutsite_bkp`: MANDATORY - NO DEFAULT AVAILABLE
-- `cms_config_stageoutserver_bkp`: MANDATORY - NO DEFAULT AVAILABLE
+- `cms_config_stageoutsite_fallback`: MANDATORY - NO DEFAULT AVAILABLE
+- `cms_config_stageoutserver_fallback`: MANDATORY - NO DEFAULT AVAILABLE
+- `cms_config_stageoutprefix_fallback`: MANDATORY - NO DEFAULT AVAILABLE
 - `cms_config_iamtoken`: MANDATORY - NO DEFAULT AVAILABLE
 - `cms_config_iam_client_id`: MANDATORY - NO DEFAULT AVAILABLE
 - `cms_config_iam_client_secret`: MANDATORY - NO DEFAULT AVAILABLE

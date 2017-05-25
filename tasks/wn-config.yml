@@ -87,15 +87,80 @@
   shell: cp -r -u /cvmfs/cms.cern.ch/SITECONF/T3_IT_Opportunistic/* /opt/exp_sw/cms/
   tags: cms_config
 
-- name: Update site-local-config.xml
-  replace: dest=/opt/exp_sw/cms/JobConfig/site-local-config.xml regexp='{{item.regexp}}' replace='{{item.replace}}' backup=yes
-  with_items:
-    - { regexp: '/cvmfs/cms.cern.ch/SITECONF/T3_IT_Opportunistic', replace: '/cvmfs/cms.cern.ch/SITECONF/{{cms_config_stageoutsite}}'} 
-    - { regexp: 'T3_IT_Opportunistic', replace: '{{cms_config_cms_local_site}}'}
-    - { regexp: 'T2_IT_Pisa', replace: '{{cms_config_stageoutsite}}' }
-    - { regexp: 'stormfe1.pi.infn.it', replace: '{{cms_config_stageoutserver}}'}
-    - { regexp: 'T1_IT_CNAF_Disk', replace: '{{cms_config_stageoutsite_bkp}}' }
-    - { regexp: 'srm://storm-fe-cms.cr.cnaf.infn.it:8444/srm/managerv2?SFN=/cmsdisk/', replace: '{{cms_config_stageoutprefix}}'}
-    - { regexp: 'storm-fe-cms.cr.cnaf.infn.it', replace: '{{cms_config_stageoutserver_bkp}}'}
+- name: clearing content /opt/exp_sw/cms/JobConfig/site-local-config.xml
+  shell: cp /dev/null /opt/exp_sw/cms/JobConfig/site-local-config.xml
   tags: cms_config
 
+- name: clearing content /opt/exp_sw/cms/PhEDEx/storage.xml
+  shell: cp /dev/null /opt/exp_sw/cms/PhEDEx/storage.xml
+  tags: cms_config
+
+- name: inserting custom site-local-config.xml
+  blockinfile:
+    name: /opt/exp_sw/cms/JobConfig/site-local-config.xml
+    marker: "<!-- {mark} Creating local TFC -->"
+    block: |
+      <site-local-config>
+      <site name="{{cms_config_cms_local_site}}">
+      <event-data>
+      <catalog url="trivialcatalog_file:/cvmfs/cms.cern.ch/SITECONF/local/PhEDEx/storage.xml?protocol=xrootd"/>
+      </event-data>
+      <source-config>
+      <statistics-destination name="cms-udpmon-collector.cern.ch:9331" />
+      </source-config>
+      <calib-data>
+      <frontier-connect>
+      <load balance="proxies"/>
+      <proxy url="http://cmssquid.pi.infn.it:3128"/>
+      <proxy url="http://cmssquid2.pi.infn.it:3128"/>
+      <backupproxy url="http://cmsbpfrontier.cern.ch:3128"/>
+      <backupproxy url="http://cmsbproxy.fnal.gov:3128"/>
+      <server url="http://cmsfrontier.cern.ch:8000/FrontierInt"/>
+      <server url="http://cmsfrontier1.cern.ch:8000/FrontierInt"/>
+      <server url="http://cmsfrontier2.cern.ch:8000/FrontierInt"/>
+      <server url="http://cmsfrontier3.cern.ch:8000/FrontierInt"/>
+      </frontier-connect>
+      </calib-data>
+      <local-stage-out>
+      <command value="srmv2-lcg"/>
+      <option value="-v --connect-timeout 240"/>
+      <catalog url="trivialcatalog_file:/cvmfs/cms.cern.ch/SITECONF/local/PhEDEx/storage.xml?protocol=srmv2"/>
+      <se-name value="{{cms_config_stageoutserver}}"/>
+      <phedex-node value="{{cms_config_stageoutsite}}"/>
+      </local-stage-out>
+      <fallback-stage-out>
+      <se-name value="{{cms_config_stageoutserver_fallback}}"/>
+      <phedex-node value="{{cms_config_stageoutsite_fallback}}"/>
+      <lfn-prefix value="{{cms_config_stageoutprefix_fallback}}"/>
+      <command value="srmv2-lcg"/>
+      <option value="-v "/>
+      </fallback-stage-out>
+      </site>
+
+  tags: cms_config
+
+- name: inserting custom storage.xml
+  blockinfile:
+    name: /opt/exp_sw/cms/PhEDEx/storage.xml
+    marker: "<!-- {mark} Creating local storage.xml -->"
+    block: |
+      <storage-mapping>
+
+      <lfn-to-pfn protocol="srmv2" destination-match=".*"
+      path-match="/+store/(.*)"   result="{{cms_config_stageoutprefix}}/store/$1"/>
+
+
+      <!-- PFN TO LFN -->
+
+      <pfn-to-lfn protocol="dcap" destination-match=".*" path-match=".*gpfs/ddn/srm/cms/(.*)" result="/$1"/>
+
+      <pfn-to-lfn protocol="srmv2" destination-match=".*"  path-match=".*\?SFN=/cms/(.*)" result="/$1"/>
+
+      <pfn-to-lfn protocol="srm" destination-match=".*"  path-match=".*\?SFN=/cms/(.*)" result="/$1"/>
+
+      <!-- FALLBACK SU PISA XROOTD -->
+      <lfn-to-pfn protocol="xrootd" path-match="/+store/(.*)" result="root://xrootd-cms.infn.it:1194//store/$1"/>
+      <pfn-to-lfn protocol="xrootd" destination-match=".*" path-match="root://xrootd-cms.infn.it:1194//store/(.*)" result="/store/$1"/>
+
+      </storage-mapping>
+  tags: cms_config
