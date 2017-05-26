@@ -136,7 +136,7 @@
       <option value="-v "/>
       </fallback-stage-out>
       </site>
-
+      </site-local-config>
   tags: cms_config
 
 - name: inserting custom storage.xml
