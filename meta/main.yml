@@ -11,7 +11,7 @@ galaxy_info:
         - xenial
     - name: EL
       versions:
-        - 7  galaxy_tags: 
+        - 7  
   galaxy_tags: 
    - mesos
 dependencies: 
