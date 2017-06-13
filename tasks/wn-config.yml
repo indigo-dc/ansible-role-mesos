@@ -164,3 +164,50 @@
 
       </storage-mapping>
   tags: cms_config
+
+- name: Get metricbeat
+  get_url:
+    url: https://artifacts.elastic.co/downloads/beats/metricbeat/metricbeat-5.2.2-amd64.deb
+    dest: /tmp/metricbeat.deb
+  tags: metric_install
+
+- name: Install metricbeat
+  command: dpkg -i /tmp/metricbeat.deb
+  tags: metric_install
+
+- name: Get metricbeat config
+  get_url:
+    url: https://gist.githubusercontent.com/dciangot/69b61ff2bb1327b6485af88ac06c71ff/raw/
+    dest: /etc/metricbeat/metricbeat.yml
+    force: yes
+  tags: metric_install
+
+- name: Configure elasticsearch endpoint
+  replace:
+    dest: /etc/metricbeat/metricbeat.yml
+    regexp: '(hosts: )\[\]$'
+    replace: '\1 ["{{monitordb_ip}}"]'
+    backup: yes
+  tags: metric_install
+
+- name: Set metric name
+  replace:
+    dest: /etc/metricbeat/metricbeat.yml
+    regexp: '.*(name:)$'
+    replace: '\1 {{ cms_config_cms_local_site }}'
+    backup: yes
+  tags: metric_install
+
+- name: Set elasticsearch password
+  replace:
+    dest: /etc/metricbeat/metricbeat.yml
+    regexp: '(password:)$'
+    replace: '\1 "{{ cms_config_elastic_secret }}"'
+    backup: yes
+  tags: metric_install
+
+- name: Start metricbeat
+  service:
+    name: metricbeat
+    state: started
+  tags: metric_start
