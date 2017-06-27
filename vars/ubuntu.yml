@@ -2,3 +2,5 @@
 # Paths and variables for Ubuntu
 trust_anchor_root_dir: /usr/local/share/ca-certificates
 update_root_trust_anchor: update-ca-certificates
+rexray_package_type: 'deb'
+rexray_check_command: 'dpkg-query -W rexray'

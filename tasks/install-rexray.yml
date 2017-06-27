@@ -1,24 +1,28 @@
 ---
 - name: Check if REX-Ray is installed
-  command: dpkg-query -W rexray
-  register: rexray_check_deb
-  failed_when: rexray_check_deb.rc > 1
+  command: "{{rexray_check_command}}"
+  register: rexray_check
+  failed_when: rexray_check.rc > 1
   changed_when: false
 
-- name: Download REX-Ray .deb to local file
+
+- name: Download REX-Ray package to local file
   get_url:
-    url="{{ rexray_pkg_url }}/{{ rexray_channel }}/{{ rexray_version }}/rexray-{{ rexray_version }}-{{ ansible_architecture }}.deb"
+    url="{{ rexray_pkg_url }}/{{ rexray_channel }}/{{ rexray_version }}/rexray-rexray-{{ rexray_version }}-{{ ansible_architecture }}.{{rexray_package_type}}"
     dest=/tmp
-  when: rexray_check_deb.rc == 1
+  when: rexray_check.rc == 1
 
 - name: Install REX-Ray .deb
-  apt: deb="/tmp/rexray-{{ rexray_version }}-{{ ansible_architecture }}.deb" state=present
-  when: rexray_check_deb.rc == 1
+  apt: deb="/tmp/rexray-rexray-{{ rexray_version }}-{{ ansible_architecture }}.{{rexray_package_type}}" state=present
+  when: rexray_check.rc == 1 and ansible_distribution == 'Ubuntu'
+
+- name: Install REX-Ray .rpm
+  yum: name="/tmp/rexray-rexray-{{ rexray_version }}-{{ ansible_architecture }}.{{rexray_package_type}}" state=present
+  when: rexray_check.rc == 1 and ansible_os_family == 'RedHat'
 
 - name: Delete temporary file
-  file: path="/tmp/rexray-{{ rexray_version }}-{{ ansible_architecture }}.deb" state=absent
-  when: rexray_check_deb.rc == 1
-
+  file: path="/tmp/rexray-rexray-{{ rexray_version }}-{{ ansible_architecture }}.{{rexray_package_type}}" state=absent
+  when: rexray_check.rc == 1
 
 - name: Create config file directory
   file: path=/etc/rexray state=directory mode=0755 owner=root group=root

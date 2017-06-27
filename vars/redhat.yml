@@ -2,3 +2,5 @@
 # Paths and variables for EL7
 trust_anchor_root_dir: /etc/pki/ca-trust/source/anchors
 update_root_trust_anchor: update-ca-trust
+rexray_package_type: 'rpm'
+rexray_check_command: 'rpm -q rexray'
