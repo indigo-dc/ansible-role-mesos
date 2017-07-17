@@ -1,8 +1,8 @@
 {
         "id": "cmswn",
         "cmd": "/root/launch_cmswn.sh",
-        "cpus": 1.00,
-        "mem": 1500,
+        "cpus": 2.00,
+        "mem": 4000,
         "instances": 1,
         "container": {
                 "type": "DOCKER",
