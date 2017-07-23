@@ -6,7 +6,7 @@
 
 ###### TEMPORARY
 
-- get_url: dest={{trust_anchor_root_dir}}/INFN-CA-2015.crt url=https://security.fi.infn.it/CA/mgt/INFN-CA-2015.pem validate_certs=no
+#- get_url: dest={{trust_anchor_root_dir}}/INFN-CA-2015.crt url=https://security.fi.infn.it/CA/mgt/INFN-CA-2015.pem validate_certs=no
 
 ###
 
