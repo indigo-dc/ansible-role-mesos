@@ -1,13 +1,14 @@
 {
-        "id": "/cvmfskeepalive",
-        "cmd": "while true; do\n    if [ ! -f /cvmfs/cms.cern.ch/cmsset_default.sh ]; then\n        echo \"Re mount CVMFS\"\n        umount /cvmfs/cms.cern.ch ; mount -t cvmfs cms.cern.ch /cvmfs/cms.cern.ch/\n    fi;\n    sleep 10;\n    if [ ! -f /cvmfs/cms.cern.ch/cmsset_default.sh ]; then\n        echo \"Failed mounting CVMFS...trying again\"\n    fi;\n    sleep 5;\ndone;\n",
-        "cpus": 0.1,
-        "mem": 32,
-        "instances": 1,
-        "constraints": [
-          [
-            "hostname",
-            "UNIQUE"
-          ]
-        ]
-} 
+  "id": "/cvmfskeepalive",
+  "cmd": "while true; do\n    df -H | grep -vE '^Filesystem|tmpfs' | awk '{ print $5 \" \" $1 }' | while read output;\n    do\n       usep=$(echo $output | awk '{ print $1}' | cut -d'%' -f1  )\n       partition=$(echo $output | awk '{ print $2 }' )\n        if [ $usep -ge 90 ]; then\n               echo \"Running out of space \\\"$partition ($usep%)\\\" on $(hostname) as on $(date)\" \n               cvmfs_talk cleanup 1000\n              #cvmfs_config wipecache\n        fi\n    done\n    cmd=\"ls /cvmfs/cms.cern.ch/cmsset_default.sh\"\n    timeout 10 $cmd\n    if [ $? -ne 0 ]; then\n        echo \"CVMFS Problems\"\n        if [ $? -eq 124 ]; then\n            echo \"Actually timeout occurred\"\n        fi\n        echo \"Re-mount CVMFS\"\n        umount /cvmfs/cms.cern.ch ; mount -t cvmfs cms.cern.ch /cvmfs/cms.cern.ch/\n        echo $?\n        if [ ! -f /cvmfs/cms.cern.ch/cmsset_default.sh ]; then\n            echo \"Failed mounting CVMFS...trying again\"\n        else\n            echo \"Successfully mounted CVMFS...\"\n            sleep 15\n        fi;\n    else\n        echo \"all is ok\"\n        sleep 15\n    fi;\ndone;",
+  "cpus": 0.1,
+  "mem": 32,
+  "disk": 0,
+  "instances": 1,
+  "constraints": [
+    [
+      "hostname",
+      "UNIQUE"
+    ]
+  ]
+}

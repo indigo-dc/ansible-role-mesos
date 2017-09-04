@@ -1,0 +1,47 @@
+{
+  "id": "/cmswnel7",
+  "cmd": "dodas.sh",
+  "cpus": 2,
+  "mem": 4000,
+  "disk": 0,
+  "instances": 1,
+  "container": {
+    "type": "DOCKER",
+    "volumes": [
+      {
+        "containerPath": "/opt/exp_sw/cms",
+        "hostPath": "/opt/exp_sw/cms",
+        "mode": "RW"
+      },
+      {
+        "containerPath": "/cvmfs",
+        "hostPath": "/cvmfs",
+        "mode": "RW"
+      },
+      {
+        "containerPath": "/sys/fs/cgroup",
+        "hostPath": "/sys/fs/cgroup",
+        "mode": "RO"
+      }
+    ],
+    "docker": {
+      "image": "spiga/dodasel7wn_cms",
+      "network": "BRIDGE",
+      "privileged": true,
+      "parameters": [
+        {
+          "key": "cap-add",
+          "value": "SYS_ADMIN"
+        }
+      ],
+      "forcePullImage": false
+    }
+  },
+  "env": {
+        "ONEDATA_ACCESS_TOKEN": "{{ cms_config_onedatatoken }}",
+        "CMS_ONEDATA_CACHE": "{{ cms_config_onedatacache }}",
+        "FRONTIER_PROXY": "{{cms_config_mysquid}}",
+        "CMS_LOCAL_SITE": "{{cms_config_cms_local_site}}",
+        "PROXY_CACHE": "{{cms_config_proxycache_host}}:{{cms_config_proxycache_serviceport}}"
+  },
+}
