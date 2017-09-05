@@ -43,5 +43,5 @@
         "FRONTIER_PROXY": "{{cms_config_mysquid}}",
         "CMS_LOCAL_SITE": "{{cms_config_cms_local_site}}",
         "PROXY_CACHE": "{{cms_config_proxycache_host}}:{{cms_config_proxycache_serviceport}}"
-  },
+  }
 }
