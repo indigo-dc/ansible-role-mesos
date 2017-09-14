@@ -103,7 +103,7 @@
       <site-local-config>
       <site name="{{cms_config_cms_local_site}}">
       <event-data>
-      <catalog url="trivialcatalog_file:/cvmfs/cms.cern.ch/SITECONF/local/PhEDEx/storage.xml?protocol=xrootd"/>
+      <catalog url="trivialcatalog_file:/cvmfs/cms.cern.ch/SITECONF/local/PhEDEx/storage.xml?protocol={{cms_input_protocol}}"/>
       </event-data>
       <source-config>
       <statistics-destination name="cms-udpmon-collector.cern.ch:9331" />
@@ -149,6 +149,8 @@
       <lfn-to-pfn protocol="srmv2" destination-match=".*"
       path-match="/+store/(.*)"   result="{{cms_config_stageoutprefix}}/store/$1"/>
 
+      <lfn-to-pfn protocol="onedata" destination-match=".*"
+      path-match="/(.*)" result="/mnt/onedata/{{cms_input_path}}/$1"/>  
 
       <!-- PFN TO LFN -->
 
