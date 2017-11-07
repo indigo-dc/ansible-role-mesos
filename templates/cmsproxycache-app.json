@@ -3,7 +3,7 @@
     "container": {
       "type": "DOCKER",
       "docker": {
-        "image": "{{ cms_config_proxycache_image}}",
+        "image": "{{ cms_config_proxycache_image }}",
         "network": "BRIDGE",
         "portMappings": [{
           "containerPort": {{ cms_config_proxycache_port }},
@@ -13,9 +13,12 @@
       }
     },
    "env": {
-        "IAMTOKEN": "{{ cms_config_iamtoken }}",
+        "IAM_TOKEN": "{{ cms_config_iam_token }}",
         "IAM_CLIENT_ID": "{{ cms_config_iam_client_id }}",
-        "IAM_CLIENT_SECRET": "{{ cms_config_iam_client_secret }}"
+        "IAM_CLIENT_SECRET": "{{ cms_config_iam_client_secret }}",
+        "MARATHON_USER": "{{ marathon_username }}",
+        "MARATHON_PASSWD": "{{ marathon_password }}",
+        "MARATHON_SERVER": "{{ marathon_server  }}"
     },
    "labels":{
       "HAPROXY_GROUP":"external"

@@ -2,6 +2,7 @@
 # defaults file for cms_config
 
 marathon_username: admin
+marathon_password: passwd
 marathon_port: 8080
 marathon_protocol: http
 
@@ -10,7 +11,7 @@ marathon_protocol: http
 #cms_config_stageoutsite: MANDATORY - NO DEFAULT AVAILABLE
 #cms_config_stageoutserver: MANDATORY - NO DEFAULT AVAILABLE 
 #cms_config_stageoutprefix: MANDATORY - NO DEFAULT AVAILABLE 
-#cms_config_iamtoken: MANDATORY - NO DEFAULT AVAILABLE
+#cms_config_iam_token: MANDATORY - NO DEFAULT AVAILABLE
 ####
 
 cms_config_cvmfs_http_proxy: "http://{{cms_config_mysquid_host}}:{{cms_config_mysquid_port}}"
@@ -26,5 +27,5 @@ cms_config_proxycache_serviceport: 8080
 
 cms_config_squid_image: "spiga/frontiersquidv1"
 cms_config_wn_image: "ciangom/cmswnitb"
-cms_config_proxycache_image: "ciangom/ttsinterface"
+cms_config_proxycache_image: "mircot/certcache"
 
