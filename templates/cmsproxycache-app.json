@@ -17,8 +17,7 @@
         "IAM_CLIENT_ID": "{{ cms_config_iam_client_id }}",
         "IAM_CLIENT_SECRET": "{{ cms_config_iam_client_secret }}",
         "MARATHON_USER": "{{ marathon_username }}",
-        "MARATHON_PASSWD": "{{ marathon_password }}",
-        "MARATHON_SERVER": "{{ marathon_server  }}"
+        "MARATHON_PASSWD": "{{ marathon_password }}"
     },
    "labels":{
       "HAPROXY_GROUP":"external"
