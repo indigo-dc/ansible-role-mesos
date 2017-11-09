@@ -27,5 +27,5 @@ cms_config_proxycache_serviceport: 8080
 
 cms_config_squid_image: "spiga/frontiersquidv1"
 cms_config_wn_image: "ciangom/cmswnitb"
-cms_config_proxycache_image: "mircot/certcache"
+cms_config_proxycache_image: "mircot/certcache:dev"
 
