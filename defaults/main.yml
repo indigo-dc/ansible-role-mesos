@@ -12,6 +12,7 @@ marathon_protocol: http
 #cms_config_stageoutserver: MANDATORY - NO DEFAULT AVAILABLE 
 #cms_config_stageoutprefix: MANDATORY - NO DEFAULT AVAILABLE 
 #cms_config_iam_token: MANDATORY - NO DEFAULT AVAILABLE
+#zookeeper_host_list: MANDATORY - NO DEFAULT AVAILABLE
 ####
 
 cms_config_cvmfs_http_proxy: "http://{{cms_config_mysquid_host}}:{{cms_config_mysquid_port}}"
