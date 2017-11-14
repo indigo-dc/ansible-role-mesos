@@ -1,9 +1,12 @@
 {
     "id": "/",
-    "dependencies": ["/proxy"],
     "groups": [
       {
         "id": "/proxy"
+      },
+      { 
+        "id": "/apps",
+        "dependencies": ["/proxy"]
       }
     ]
   }

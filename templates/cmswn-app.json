@@ -1,5 +1,5 @@
 {
-        "id": "cmswn",
+        "id": "/apps/cmswn",
         "cmd": "/root/launch_cmswn.sh",
         "cpus": 2.00,
         "mem": 4000,

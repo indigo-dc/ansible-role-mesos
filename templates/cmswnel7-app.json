@@ -1,5 +1,5 @@
 {
-  "id": "/cmswnel7",
+  "id": "/apps/cmswnel7",
   "cmd": "dodas.sh",
   "cpus": 2,
   "mem": 4000,
