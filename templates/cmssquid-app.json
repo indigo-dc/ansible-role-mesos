@@ -1,5 +1,5 @@
 {
-    "id": "cmssquid",
+    "id": "/proxy/cmssquid",
     "container": {
       "type": "DOCKER",
       "docker": {

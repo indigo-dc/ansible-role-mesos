@@ -1,5 +1,5 @@
 {
-    "id": "certcache",
+    "id": "/proxy/certcache",
     "container": {
       "type": "DOCKER",
       "docker": {

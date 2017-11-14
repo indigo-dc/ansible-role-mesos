@@ -1,5 +1,24 @@
 ---
 
+- name: Create groups and dependencies
+  run_once: true
+  uri: 
+     url: "{{marathon_protocol}}://marathon.service.consul:{{marathon_port}}/v2/groups"
+     user: "{{marathon_username}}"
+     password: "{{marathon_password}}"
+     validate_certs: "no"
+     method: POST
+     HEADER_Content-Type: "application/json"
+     body: "{{ lookup('template', 'templates/application_groups.json') }}"
+     body_format: json
+  register: result
+  until: result.status == 200
+  retries: 10
+  delay: 20
+  changed_when: false
+  tags:
+    - cms_apps
+
 - name: start CMS squid
   run_once: true
   uri: 
