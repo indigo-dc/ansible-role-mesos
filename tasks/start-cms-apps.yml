@@ -36,8 +36,7 @@
      body: "{{ lookup('template', 'templates/cmssquid-app.json') }}"
      body_format: json
   register: result
-  # The application has been created and a deployment is started.
-  until: result.status == 201
+  until: result.status == 200 | result.status == 201
   retries: 10
   delay: 20
   changed_when: false
@@ -66,8 +65,7 @@
      body: "{{ lookup('template', 'templates/cmsproxycache-app.json') }}"
      body_format: json
   register: result
-  # The application has been created and a deployment is started.
-  until: result.status == 201
+  until: result.status == 200 | result.status == 201
   retries: 10
   delay: 20
   changed_when: false
@@ -96,8 +94,7 @@
      body: "{{ lookup('template', 'templates/cvmfskeepalive-app.json') }}"
      body_format: json
   register: result
-  # The application has been created and a deployment is started.
-  until: result.status == 201
+  until: result.status == 200 | result.status == 201
   retries: 10
   delay: 20
   changed_when: false
@@ -116,8 +113,7 @@
      body: "{{ lookup('template', 'templates/cmswn-app.json') }}"
      body_format: json
   register: result
-  # The application has been created and a deployment is started.
-  until: result.status == 201
+  until: result.status == 200 | result.status == 201
   retries: 10
   delay: 20
   changed_when: false
@@ -136,8 +132,7 @@
      body: "{{ lookup('template', 'templates/cmswnel7-app.json') }}"
      body_format: json
   register: result
-  # The application has been created and a deployment is started.
-  until: result.status == 201
+  until: result.status == 200 | result.status == 201
   retries: 10
   delay: 20
   changed_when: false
