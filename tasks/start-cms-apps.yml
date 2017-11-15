@@ -35,9 +35,9 @@
      HEADER_Content-Type: "application/json"
      body: "{{ lookup('template', 'templates/cmssquid-app.json') }}"
      body_format: json
+     status_code: [200,201]
   register: result
   until: result.status == 200 or result.status == 201
-  status_code: [200,201]
   retries: 10
   delay: 20
   changed_when: false
@@ -65,9 +65,9 @@
      HEADER_Content-Type: "application/json"
      body: "{{ lookup('template', 'templates/cmsproxycache-app.json') }}"
      body_format: json
+     status_code: [200,201]
   register: result
   until: result.status == 200 or result.status == 201
-  status_code: [200,201]
   retries: 10
   delay: 20
   changed_when: false
@@ -95,9 +95,9 @@
      HEADER_Content-Type: "application/json"
      body: "{{ lookup('template', 'templates/cvmfskeepalive-app.json') }}"
      body_format: json
+     status_code: [200,201]
   register: result
   until: result.status == 200 or result.status == 201
-  status_code: [200,201]
   retries: 10
   delay: 20
   changed_when: false
@@ -115,9 +115,9 @@
      HEADER_Content-Type: "application/json"
      body: "{{ lookup('template', 'templates/cmswn-app.json') }}"
      body_format: json
+     status_code: [200,201]
   register: result
   until: result.status == 200 or result.status == 201
-  status_code: [200,201]
   retries: 10
   delay: 20
   changed_when: false
@@ -135,9 +135,9 @@
      HEADER_Content-Type: "application/json"
      body: "{{ lookup('template', 'templates/cmswnel7-app.json') }}"
      body_format: json
+     status_code: [200,201]
   register: result
   until: result.status == 200 or result.status == 201
-  status_code: [200,201]
   retries: 10
   delay: 20
   changed_when: false
