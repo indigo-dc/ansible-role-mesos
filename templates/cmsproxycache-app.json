@@ -18,7 +18,8 @@
         "IAM_CLIENT_SECRET": "{{ cms_config_iam_client_secret }}",
         "MARATHON_USER": "{{ marathon_username }}",
         "MARATHON_PASSWD": "{{ marathon_password }}",
-        "ZOOKEEPER_HOST_LIST": "{{ zookeeper_host_list }}"
+        "ZOOKEEPER_HOST_LIST": "{{ zookeeper_host_list }}",
+        "CACHE_MANAGER": "{{ proxy_cache_manager }}"
     },
    "labels":{
       "HAPROXY_GROUP":"external"
