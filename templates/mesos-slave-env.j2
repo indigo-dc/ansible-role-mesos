@@ -10,5 +10,10 @@ export  MESOS_WORK_DIR="{{ mesos_slave_work_dir }}"
 export  MESOS_HOSTNAME="{{ mesos_ip }}"
 {% if   mesos_enable_dvdi_mod == true %}
 export  MESOS_MODULES="file:///usr/lib/dvdi-mod.json"
-export  MESOS_ISOLATION="com_emccode_mesos_DockerVolumeDriverIsolator"
+{% endif %}
+{% if   mesos_enable_gpu_support == true %}
+export  MESOS_IMAGE_PROVIDERS="docker"
+{% endif %}
+{% if mesos_isolation %}
+export MESOS_ISOLATION={{mesos_isolation|join('')}}
 {% endif %}
