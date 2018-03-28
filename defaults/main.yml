@@ -69,13 +69,15 @@ mesos_rpm_package: "mesos-{{ mesos_version }}"
 ## Rex-ray driver
 mesos_enable_dvdi_mod: false
 mesos_module_dvdi_version: '0.4.7'
+mesos_install_rexray: true
 rexray_channel: stable
-rexray_version: 0.3.3
+rexray_version: 0.11.1
 rexray_pkg_url: https://dl.bintray.com/emccode/rexray
 mesos_rexray_os_authurl: ''
 mesos_rexray_os_username: ''
 mesos_rexray_os_password: ''
 mesos_rexray_os_tenantname: ''
+mesos_rexray_os_domainname: ''
 mesos_rexray_os_regionname: ''
 mesos_rexray_os_availabilityzonename: 'nova'
 
