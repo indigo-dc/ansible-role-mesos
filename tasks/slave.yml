@@ -60,8 +60,7 @@
   file: state=absent path=/etc/mesos-slave/
 
 
-- name: Set fact
-  block:
+- block:
     - set_fact: 
         mesos_isolation: []
     - set_fact:
@@ -88,7 +87,7 @@
     - Restart mesos-slave
 
 - include: install-rexray.yml
-  when: mesos_install_rexray
+  when: mesos_install_rexray == true
 
 - include: install-dvdi_mod.yml
   when: mesos_enable_dvdi_mod == true
