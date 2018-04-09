@@ -15,5 +15,5 @@ export  MESOS_MODULES="file:///usr/lib/dvdi-mod.json"
 export  MESOS_IMAGE_PROVIDERS="docker"
 {% endif %}
 {% if mesos_isolation %}
-export MESOS_ISOLATION={{mesos_isolation|join('')}}
+export  MESOS_ISOLATION={{mesos_isolation|join(',')}}
 {% endif %}
