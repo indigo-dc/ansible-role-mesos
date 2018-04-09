@@ -5,6 +5,7 @@ Configure and run Mesos components (master or slaves) in a docker container usin
 
 This role has been specifically developed to be used for the deployment of Mesos in the framework of INDIGO-DataCloud project.
 
+
 Role Variables
 --------------
 
