@@ -9,4 +9,3 @@
   template: src=dvdi-mod.j2 dest=/usr/lib/dvdi-mod.json
   notify:
     - Restart mesos-slave
-

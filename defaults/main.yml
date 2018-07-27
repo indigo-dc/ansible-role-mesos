@@ -80,4 +80,3 @@ mesos_rexray_os_tenantname: ''
 mesos_rexray_os_domainname: ''
 mesos_rexray_os_regionname: ''
 mesos_rexray_os_availabilityzonename: 'nova'
-
