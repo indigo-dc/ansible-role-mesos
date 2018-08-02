@@ -15,4 +15,4 @@ galaxy_info:
   galaxy_tags: 
    - mesos
   dependencies:
-  - { role: indigo-dc.docker, tags: ['v0.0.1-dodas'] }
+   - { role: indigo-dc.docker, tags: ['v0.0.2-dodas'] }
