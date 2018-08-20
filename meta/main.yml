@@ -15,8 +15,8 @@ galaxy_info:
   galaxy_tags: 
    - mesos
  
- dependencies:
-   - src: indigo-dc.docker
-     version: v0.0.2-dodas
-     docker_dns: [ "{{docker_bridge_ip}}", "8.8.8.8" ] 
-     docker_dns_search: "service.{{ consul_domain }}"
+dependencies:
+  - src: indigo-dc.docker
+    version: v0.0.2-dodas
+    docker_dns: [ "{{docker_bridge_ip}}", "8.8.8.8" ] 
+    docker_dns_search: "service.{{ consul_domain }}"
