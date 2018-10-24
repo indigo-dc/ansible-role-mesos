@@ -14,5 +14,6 @@ galaxy_info:
         - 7  
   galaxy_tags: 
    - mesos
-dependencies: []
-#   - { role: indigo-dc.docker }
+dependencies: 
+   - src: indigo-dc.docker
+     version: v1.0.0-deep
