@@ -36,6 +36,7 @@
     - unzip
     - python-setuptools
     - python-dev
+    - default-jre-headless
     - "{{ mesos_apt_package }}"
   when: ansible_distribution == 'Ubuntu'
 
