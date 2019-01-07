@@ -60,6 +60,27 @@
 - name: Remove Default Mesos-Slave Config
   file: state=absent path=/etc/mesos-slave/
 
+
+- block:
+    - set_fact: 
+        mesos_isolation: []
+    - set_fact:
+         mesos_isolation: "{{mesos_isolation}} + ['com_emccode_mesos_DockerVolumeDriverIsolator']"
+         mesos_install_rexray: true
+      when: mesos_enable_dvdi_mod == true
+    - shell: /usr/bin/nvidia-smi
+      register: nvidia_cmd_result
+      when: (mesos_enable_gpu_support == true)
+      changed_when: False
+      failed_when: False
+    - set_fact: 
+        mesos_isolation: "{{mesos_isolation}} + ['docker/runtime','filesystem/linux','cgroups/devices','gpu/nvidia']"
+      when: (mesos_enable_gpu_support == true) and (nvidia_cmd_result.rc==0)
+    
+- name: Debug mesos_isolation
+  debug: var=mesos_isolation
+     
+
 # == Configure and recreate
 - name: Mesos default config file
   template: src=mesos-slave-env.j2 dest=/etc/default/mesos
@@ -67,6 +88,9 @@
     - Restart mesos-slave
 
 - include: install-rexray.yml
+  when: mesos_install_rexray == true
+
+- include: install-dvdi_mod.yml
   when: mesos_enable_dvdi_mod == true
 
 #- name: run mesos-slave container with rex-ray enabled
@@ -108,4 +132,3 @@
 #  tags:
 #    - mesos-slave
 #
-
