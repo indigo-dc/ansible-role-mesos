@@ -57,7 +57,7 @@ mesos_quorum: "
 {%- endif -%}
 "
 
-mesos_version: "1.5.0"
+mesos_version: "1.7.0"
 
 # Debian
 mesos_package_version: "2.0.1"
