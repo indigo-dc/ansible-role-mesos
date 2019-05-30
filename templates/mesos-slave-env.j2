@@ -17,3 +17,4 @@ export  MESOS_IMAGE_PROVIDERS="docker"
 {% if mesos_isolation %}
 export  MESOS_ISOLATION={{mesos_isolation|join(',')}}
 {% endif %}
+export  MESOS_ATTRIBUTES={{mesos_slave_attributes}}
