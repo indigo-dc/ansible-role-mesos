@@ -14,7 +14,7 @@ zookeeper_peers_nodes: "
 # Common
 mesos_executor_registration_timeout: 10mins
 mesos_cluster_name: "IndigoCluster"
-mesos_ip: "{{ ansible_default_ipv4.address }}"
+mesos_ip: "0.0.0.0"
 mesos_hostname: "{{ ansible_default_ipv4.address }}"
 
 mesos_image_version: '1.5.0'
