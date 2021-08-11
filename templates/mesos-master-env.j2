@@ -11,3 +11,11 @@ MESOS_AUTHENTICATE_HTTP_READWRITE=true
 MESOS_AUTHENTICATE_HTTP_READONLY=true
 MESOS_CREDENTIALS={{mesos_master_work_dir}}/credentials
 {% endif %}
+{% if mesos_enable_ssl == true %}
+SSL_ENABLED=1
+SSL_KEY_FILE={{mesos_ssl_key_file}}
+SSL_CERT_FILE={{mesos_ssl_cert_file}}
+SSL_REQUIRE_CERT={{mesos_ssl_require_cert}}
+SSL_SUPPORT_DOWNGRADE={{mesos_ssl_support_downgrade}}
+LIBPROCESS_SSL_CIPHERS={{mesos_ssl_ciphers}}
+{% endif %}

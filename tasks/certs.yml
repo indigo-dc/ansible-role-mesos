@@ -1,0 +1,29 @@
+---
+- name: Generate a Self Signed certificate
+  block:      
+    - openssl_privatekey:
+        path: /root/ssl/server.key
+
+    - openssl_csr:
+        path: /root/ssl/server.csr
+        privatekey_path: /root/ssl/server.key
+
+    - openssl_certificate:
+        provider: selfsigned
+        path: /root/ssl/server.crt
+        privatekey_path: /root/ssl/server.key
+        csr_path: /root/ssl/server.csr
+  when: mesos_ssl_cert_gen == "self_signed"
+
+  - name: Generate a Self Signed OpenSSL certificate
+    vars:
+      certbot_auto_renew: true
+      certbot_create_if_missing: true
+      certbot_create_method: standalone
+      certbot_admin_email: {{ certbot_admin_email }}
+      certbot_certs:
+        - domains:
+            - {{ mesos_master_dns_name }}
+    roles:
+    - geerlingguy.certbot
+    when: mesos_ssl_cert_gen == "letsencrypt" 

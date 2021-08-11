@@ -17,7 +17,19 @@ mesos_cluster_name: "IndigoCluster"
 mesos_ip: "{{ ansible_default_ipv4.address }}"
 mesos_hostname: "{{ ansible_default_ipv4.address }}"
 
-mesos_image_version: '1.5.0'
+mesos_image_version: '1.11.0'
+
+# Enable SSL
+mesos_enable_ssl: false
+mesos_ssl_cert_file: "{% if mesos_ssl_cert_gen == 'letsencrypt' %}/etc/letsencrypt/live/{{mesos_master_dns_name}}/fullchain.pem{% else %}/etc/mesos/server.crt{% endif %}" 
+mesos_ssl_key_file: "{% if mesos_ssl_cert_gen == 'letsencrypt' %}/etc/letsencrypt/live/{{mesos_master_dns_name}}/privkey.pem{% else %}/etc/mesos/server.key{% endif %}"        
+#mesos_ssl_cert_gen - allowed-values = self_signed, letsencrypt, none
+mesos_ssl_cert_gen: none
+mesos_master_dns_name:
+certbot_admin_email:         
+mesos_ssl_require_cert: false
+mesos_ssl_support_downgrade: true
+mesos_ssl_ciphers: ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256
 
 # Defaults file for mesos-salve
 mesos_slave_port: 5051
@@ -36,7 +48,7 @@ mesos_password: 'admin'
 mesos_master_port: 5050
 mesos_master_work_dir: "/var/lib/mesos"
 mesos_master_offer_timeout: 30secs
-mesos_master_image: "indigodatacloud/mesos-master:{{ mesos_image_version }}"
+mesos_master_image: "marica/mesos-master:{{ mesos_image_version }}"
 
 mesos_master_nodes: "
 {%- if mesos_masters_list is defined -%}
