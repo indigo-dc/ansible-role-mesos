@@ -1,133 +1,41 @@
 ---
 # Tasks for Slave nodes
 
-- name: Ensure local certs directory exists
-  file: state=directory path={{ trust_anchor_root_dir }}
-
-###### TEMPORARY
-
-#- get_url: dest={{trust_anchor_root_dir}}/INFN-CA-2015.crt url=https://security.fi.infn.it/CA/mgt/INFN-CA-2015.pem validate_certs=no
-
-###
-
-- name: Update cert index
-  command: "{{ update_root_trust_anchor }}"
-
-
 - name: create working dir
   file:
     path: "{{ mesos_slave_work_dir }}"
     state: directory
     mode: 0755
 
-- name: Add apt-key
-  apt_key: id=E56151BF keyserver=keyserver.ubuntu.com state=present
-  when: ansible_distribution == 'Ubuntu'
-
-- name: Add mesosphere repo
-  apt_repository: repo='deb {{ mesosphere_apt_url }} {{ ansible_distribution_release | lower }} main' state=present update_cache=yes
-  when: ansible_distribution == 'Ubuntu'
-
-- name: Install Debian OS packages
-  apt: pkg={{ item }} state=present update_cache=yes cache_valid_time=3600
-  with_items:
-    - wget
-    - curl
-    - unzip
-    - python-setuptools
-    - python-dev
-    - "{{ mesos_apt_package }}"
-  when: ansible_distribution == 'Ubuntu'
-
-
-- name: Add mesosphere repo
-  yum: name=http://repos.mesosphere.io/el/7/noarch/RPMS/mesosphere-el-repo-7-1.noarch.rpm state=present
-  when: ansible_os_family == 'RedHat'
-
-- name: Install RPM
-  yum: name={{mesos_rpm_package}} state=present
-  when: ansible_os_family == 'RedHat'
-
-- name: Remove Mesos ZK File
-  file: state=absent path=/etc/mesos/zk
-
-- file: path=/etc/mesos/zk state=touch
-
-- name: Remove Default Mesos-Master Config
-  file: state=absent path=/etc/mesos-master/
-
-- name: Remove Default Mesos-Slave Config
-  file: state=absent path=/etc/mesos-slave/
-
 
 - block:
-    - set_fact: 
-        mesos_isolation: []
     - set_fact:
-         mesos_isolation: "{{mesos_isolation}} + ['com_emccode_mesos_DockerVolumeDriverIsolator']"
-         mesos_install_rexray: true
-      when: mesos_enable_dvdi_mod == true
+        mesos_isolation: []
     - shell: /usr/bin/nvidia-smi
       register: nvidia_cmd_result
       when: (mesos_enable_gpu_support == true)
       changed_when: False
       failed_when: False
-    - set_fact: 
+    - set_fact:
         mesos_isolation: "{{mesos_isolation}} + ['docker/runtime','filesystem/linux','cgroups/devices','gpu/nvidia']"
       when: (mesos_enable_gpu_support == true) and (nvidia_cmd_result.rc==0)
-    
-- name: Debug mesos_isolation
-  debug: var=mesos_isolation
-     
 
-# == Configure and recreate
 - name: Mesos default config file
-  template: src=mesos-slave-env.j2 dest=/etc/default/mesos
+  template: src=mesos-slave-env.j2 dest=/etc/mesos/mesos-agent
   notify:
     - Restart mesos-slave
 
-- include: install-rexray.yml
-  when: mesos_install_rexray == true
+- block:
+    - name: install Debian OS dependencies
+      apt: pkg="{{ mesos_package_dependencies }}" state=present update_cache=yes cache_valid_time=3600
+    - name: install mesos package
+      apt:
+        deb: "{{ mesos_deb_package_url }}"    
+    - name: Enable and start agent service
+      service:
+        enabled: true
+        name: mesos-agent
+        state: started        
+  when: mesos_agent_install_mode == "package" and ansible_distribution == 'Ubuntu'
 
-- include: install-dvdi_mod.yml
-  when: mesos_enable_dvdi_mod == true
 
-#- name: run mesos-slave container with rex-ray enabled
-#  docker:
-#    name: mesos-slave
-#    image: "marica/mesos-slave:rexray"
-#    state: reloaded
-#    privileged: true
-#    pid: host
-#    restart_policy: always
-#    volumes:
-#    - "/sys/fs/cgroup:/sys/fs/cgroup"
-#    - "/var/run/docker.sock:/var/run/docker.sock"
-#    - "{{ mesos_slave_work_dir }}:{{ mesos_slave_work_dir }}"
-#    - "{{ mesos_log_dir }}:{{ mesos_log_dir }}"
-#    - "/run/docker/plugins:/run/docker/plugins"
-#    - "/var/run/rexray:/var/run/rexray"
-#    - "/var/lib/rexray:/var/lib/rexray" # to be shared 
-#    - "/dev:/dev"
-#    net: "host"
-#    env:
-#      MESOS_MASTER: "zk://{{ zookeeper_peers_nodes }}/mesos"
-#      MESOS_EXECUTOR_REGISTRATION_TIMEOUT: "{{ mesos_executor_registration_timeout }}"
-#      MESOS_CONTAINERIZERS: "{{ mesos_containerizers }}"
-#      MESOS_LOG_DIR: "{{ mesos_log_dir }}"
-#      MESOS_docker_mesos_image: "{{ mesos_slave_image }}"
-#      MESOS_IP: "{{ mesos_ip }}"
-#      MESOS_WORK_DIR: "{{ mesos_slave_work_dir }}"
-#      MESOS_HOSTNAME: "{{ mesos_ip }}"
-#      MESOS_MODULES: "file:///usr/lib/dvdi-mod.json"
-#      MESOS_ISOLATION: "com_emccode_mesos_DockerVolumeDriverIsolator"
-#      OS_AUTH_URL: "{{os_auth_url}}"
-#      OS_USERNAME: "{{os_username}}"
-#      OS_PASSWORD: "{{os_password}}"
-#      OS_TENANT_NAME: "{{os_tenant_name}}"
-#      OS_REGION_NAME: "{{os_region_name}}"
-#      OS_AVAILABILITY_ZONE: "{{os_availability_zone}}"
-#  when: mesos_enable_dvdi_mod == 'yes'
-#  tags:
-#    - mesos-slave
-#

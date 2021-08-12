@@ -70,26 +70,13 @@ mesos_quorum: "
 {%- endif -%}
 "
 
-mesos_version: "1.5.0"
+mesos_deb_package_url: "https://stor.cloud.infn.it/v1/AUTH_b3794220f66f40aeb862e70d963b34e3/mesos-packages/mesos-1.11.0-1.ubuntu2004_amd64.deb"
+mesos_package_dependencies:
+  - openjdk-8-jre-headless 
+  - libsvn1 
+  - libcurl3-nss
 
 # Debian
-mesos_package_version: "2.0.1"
-mesosphere_apt_url: "http://repos.mesosphere.com/{{ ansible_distribution | lower }}"
-mesos_os_distribution: "{{ ansible_distribution | lower }}"
-mesos_os_version: "{{ ansible_distribution_version.split('.') | join('') }}"
-mesos_apt_package: "mesos={{ mesos_version }}-{{ mesos_package_version }}"
-mesos_rpm_package: "mesos-{{ mesos_version }}"
-## Rex-ray driver
-mesos_enable_dvdi_mod: false
-mesos_module_dvdi_version: '0.4.7'
-mesos_install_rexray: false
-rexray_channel: stable
-rexray_version: 0.11.1
-rexray_pkg_url: https://dl.bintray.com/emccode/rexray
-mesos_rexray_os_authurl: ''
-mesos_rexray_os_username: ''
-mesos_rexray_os_password: ''
-mesos_rexray_os_tenantname: ''
-mesos_rexray_os_domainname: ''
-mesos_rexray_os_regionname: ''
-mesos_rexray_os_availabilityzonename: 'nova'
+# mesos_agent_install_mode: package or docker
+mesos_agent_install_mode: "package"
+
