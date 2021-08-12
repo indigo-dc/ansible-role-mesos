@@ -23,10 +23,11 @@ mesos_image_version: '1.11.0'
 mesos_enable_ssl: false
 mesos_ssl_cert_file: "{% if mesos_ssl_cert_gen == 'letsencrypt' %}/etc/letsencrypt/live/{{mesos_master_dns_name}}/fullchain.pem{% else %}/etc/mesos/server.crt{% endif %}" 
 mesos_ssl_key_file: "{% if mesos_ssl_cert_gen == 'letsencrypt' %}/etc/letsencrypt/live/{{mesos_master_dns_name}}/privkey.pem{% else %}/etc/mesos/server.key{% endif %}"        
+mesos_ssl_csr_file: /etc/mesos/server.csr
 #mesos_ssl_cert_gen - allowed-values = self_signed, letsencrypt, none
 mesos_ssl_cert_gen: none
 mesos_master_dns_name:
-certbot_admin_email:         
+mesos_certbot_admin_email:         
 mesos_ssl_require_cert: false
 mesos_ssl_support_downgrade: true
 mesos_ssl_ciphers: ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256

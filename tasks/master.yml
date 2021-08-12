@@ -10,15 +10,28 @@
   template:
     src=mesos-master-env.j2 dest=/etc/mesos/.mesosmenv
 
-
-
 - name: "Create mesos credentials file"
   template:
     src=mesos-credentials.j2 dest={{mesos_master_work_dir}}/credentials
   when: mesos_authenticate_http == true
 
-- include: certs.yml
+
+- set_fact:
+    volumes_to_mount:
+      - "{{ mesos_master_work_dir }}:{{ mesos_master_work_dir }}"
+      - "{{ mesos_log_dir }}:{{ mesos_log_dir }}"
+
+- block:
+    - include: certs.yml
+    - set_fact:
+        volumes_to_mount:
+          - "{{ mesos_master_work_dir }}:{{ mesos_master_work_dir }}"
+          - "{{ mesos_log_dir }}:{{ mesos_log_dir }}"
+          - "{{ mesos_ssl_key_file }}:{{ mesos_ssl_key_file }}"        
+          - "{{ mesos_ssl_cert_file }}:{{ mesos_ssl_cert_file }}"        
   when: mesos_enable_ssl|bool        
+
+
 
 - name: run mesos-master container
   docker_container:
@@ -27,9 +40,7 @@
     detach: true
     state: started
     network_mode: "host"
-    volumes:
-    - "{{ mesos_master_work_dir }}:{{ mesos_master_work_dir }}"
-    - "{{ mesos_log_dir }}:{{ mesos_log_dir }}"
+    volumes: "{{ volumes_to_mount }}"
     restart_policy: always
     env_file: /etc/mesos/.mesosmenv
   tags:
