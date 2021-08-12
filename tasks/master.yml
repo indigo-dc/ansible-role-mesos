@@ -8,7 +8,7 @@
 
 - name: "Create mesos container env file"
   template:
-    src=mesos-master-env.j2 dest=/etc/mesos/.mesosmenv
+    src=mesos-master-env.j2 dest=/etc/mesos/mesos-master
 
 - name: "Create mesos credentials file"
   template:
@@ -42,6 +42,6 @@
     network_mode: "host"
     volumes: "{{ volumes_to_mount }}"
     restart_policy: always
-    env_file: /etc/mesos/.mesosmenv
+    env_file: /etc/mesos/mesos-master
   tags:
     - mesos-master
