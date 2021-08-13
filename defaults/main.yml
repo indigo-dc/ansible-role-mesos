@@ -26,7 +26,8 @@ mesos_ssl_key_file: "{% if mesos_ssl_cert_gen == 'letsencrypt' %}/etc/letsencryp
 mesos_ssl_csr_file: /etc/mesos/server.csr
 #mesos_ssl_cert_gen - allowed-values = self_signed, letsencrypt, none
 mesos_ssl_cert_gen: none
-mesos_master_dns_name:
+# mesos_master_dns_name is only used for letsencrypt cert generation
+mesos_master_dns_name: "{{ mesos_hostname }}"
 mesos_certbot_admin_email:         
 mesos_ssl_require_cert: false
 mesos_ssl_support_downgrade: true
