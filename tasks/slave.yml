@@ -20,11 +20,6 @@
         mesos_isolation: "{{mesos_isolation}} + ['docker/runtime','filesystem/linux','cgroups/devices','gpu/nvidia']"
       when: (mesos_enable_gpu_support == true) and (nvidia_cmd_result.rc==0)
 
-- name: Mesos default config file
-  template: src=mesos-slave-env.j2 dest=/etc/mesos/mesos-agent
-  notify:
-    - Restart mesos-slave
-
 - block:
     - name: install Debian OS dependencies
       apt: pkg="{{ mesos_package_dependencies }}" state=present update_cache=yes cache_valid_time=3600
@@ -38,4 +33,7 @@
         state: started        
   when: mesos_agent_install_mode == "package" and ansible_distribution == 'Ubuntu'
 
-
+- name: write Mesos agent config file
+  template: src=mesos-slave-env.j2 dest=/etc/mesos/mesos-agent
+  notify:
+    - Restart mesos-slave
